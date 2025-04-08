@@ -15,18 +15,20 @@ export default Vue.extend({
       <el-container>
         <el-aside width="200px">
           <el-menu>
-            <el-menu-item>
-              <i class="el-icon-setting" />
-              <span slot="title">
-                <router-link to="/">首页</router-link>
-              </span>
-            </el-menu-item>
-            <el-menu-item>
-              <i class="el-icon-setting" />
-              <span slot="title">
-                <router-link to="/about">关于我们</router-link>
-              </span>
-            </el-menu-item>
+            <router-link to="/">
+              <el-menu-item>
+                <i class="el-icon-setting" />
+                <span slot="title">首页</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/about">
+              <el-menu-item>
+                <i class="el-icon-setting" />
+                <span slot="title">
+                  关于我们
+                </span>
+              </el-menu-item>
+            </router-link>
           </el-menu>
         </el-aside>
         <el-container>
@@ -62,7 +64,6 @@ export default Vue.extend({
 .el-main {
   background-color: #E9EEF3;
   color: #333;
-  text-align: center;
 }
 
 body>.el-container {

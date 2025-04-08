@@ -1,5 +1,4 @@
-import { Aside, Button, Card, Col, Container, Footer, Form, FormItem, Header, Input, Main, Menu, MenuItem, Row,
-} from 'element-ui'
+import { Aside, Button, Card, Col, Container, Footer, Form, FormItem, Header, Input, Main, Menu, MenuItem, Row, Table, TableColumn, Checkbox } from 'element-ui'
 import Vue from 'vue'
 
 Vue.component(Container.name, Container)
@@ -16,3 +15,6 @@ Vue.component(FormItem.name, FormItem)
 Vue.component(Input.name, Input)
 Vue.component(Card.name, Card)
 Vue.component(Button.name, Button)
+Vue.component(Table.name, Table)
+Vue.component(TableColumn.name, TableColumn)
+Vue.component(Checkbox.name, Checkbox)

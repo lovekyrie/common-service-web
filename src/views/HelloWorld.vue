@@ -1,64 +1,78 @@
 <script lang="ts" setup>
+import type Service from '@/utils/types/service'
 import { ref } from 'vue'
 
-const msg = ref('Welcome to Your Vue.js + TypeScript App')
+const { toggleChoose } = useCheckbox()
+
+const tableItem: Service = {
+  date: '2025-04-08',
+  name: 'lovekyrie',
+  phone: '18758322412',
+  address: '浙江省宁波市海曙区学院路416号',
+}
+const list = (Array.from({ length: 20 }).fill(tableItem) as Service[]).map((k, index) => {
+  return { id: index + 1, ...k }
+})
+const tableColumns = [
+  { prop: 'id', label: '序号' },
+  { prop: 'date', label: '日期' },
+  { prop: 'name', label: '姓名' },
+  { prop: 'phone', label: '电话' },
+  { prop: 'address', label: '地址' },
+  { prop: 'opreator', label: '操作' },
+]
+
+function useCheckbox() {
+  const chooseList = ref<number[]>([])
+
+  function toggleChoose(id: number) {
+    const idx = chooseList.value.findIndex(k => k === id)
+    if (idx > -1) {
+      chooseList.value.splice(idx, 1)
+    }
+    else {
+      chooseList.value.push(id)
+    }
+  }
+
+  return { toggleChoose }
+}
 </script>
 
 <template>
   <div class="hello-container">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <div class="hello">
-      <h1>{{ msg }}</h1>
-      <p>
-        For a guide and recipes on how to configure / customize this project,<br>
-        check out the
-        <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-      </p>
-      <h3>Installed CLI Plugins</h3>
-      <ul>
-        <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-        <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-        <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-        <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-        <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-      </ul>
-      <h3>Essential Links</h3>
-      <ul>
-        <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-        <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-        <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-        <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-        <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-      </ul>
-      <h3>Ecosystem</h3>
-      <ul>
-        <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-        <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-        <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-        <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-        <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-      </ul>
-    </div>
+    <el-row>
+      <el-col :span="24">
+        <el-button type="primary">
+          新增
+        </el-button>
+        <el-button type="danger">
+          删除
+        </el-button>
+      </el-col>
+    </el-row>
+    <el-table :data="list" class="service-table">
+      <el-table-column v-for="item, index in tableColumns" :key="index" :prop="item.prop" :label="item.label">
+        <template #default="scope">
+          <div v-if="item.prop === 'id'">
+            <el-checkbox @change="toggleChoose" />
+            <span>{{ scope.row.id }}</span>
+          </div>
+          <div v-else-if="item.prop === 'opreator'">
+            <span />
+          </div>
+          <span v-else>{{ scope.row[item.prop] }}</span>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1 {
-  font-size: 2em;
-}
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.service-table {
+  margin-top: 10px;
+  border-radius: 3px;
+  border: 1px solid #ebebeb;
 }
 </style>
