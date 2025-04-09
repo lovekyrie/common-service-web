@@ -30,7 +30,7 @@ function useSubmit() {
         const res = await formRef.value.validate()
         if (res) {
           store.commit('setUserInfo', form)
-          router.push({ name: 'welcome' })
+          router.push({ name: 'service' })
         }
       }
     }

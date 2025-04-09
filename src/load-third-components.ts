@@ -1,4 +1,4 @@
-import { Aside, Button, Card, Col, Container, Footer, Form, FormItem, Header, Input, Main, Menu, MenuItem, Row, Table, TableColumn, Checkbox } from 'element-ui'
+import { Aside, Button, Card, Checkbox, Col, Container, DatePicker, Dialog, Footer, Form, FormItem, Header, Input, Main, Menu, MenuItem, MenuItemGroup, Row, Submenu, Table, TableColumn } from 'element-ui'
 import Vue from 'vue'
 
 Vue.component(Container.name, Container)
@@ -18,3 +18,7 @@ Vue.component(Button.name, Button)
 Vue.component(Table.name, Table)
 Vue.component(TableColumn.name, TableColumn)
 Vue.component(Checkbox.name, Checkbox)
+Vue.component(Dialog.name, Dialog)
+Vue.component(DatePicker.name, DatePicker)
+Vue.component(Submenu.name, Submenu)
+Vue.component(MenuItemGroup.name, MenuItemGroup)
