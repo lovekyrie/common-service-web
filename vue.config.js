@@ -1,11 +1,18 @@
 const { defineConfig } = require('@vue/cli-service')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
       new BundleAnalyzerPlugin(),
+      require('unplugin-vue-components/webpack').default({
+        resolvers: [ElementPlusResolver()],
+      }),
+      require('unplugin-auto-import/webpack').default({
+        resolvers: [ElementPlusResolver()],
+      }),
     ],
     devtool: 'source-map',
   },

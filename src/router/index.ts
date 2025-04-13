@@ -1,11 +1,7 @@
-import type { RouteConfig } from 'vue-router'
-import Layout from '@/views/Layout.vue'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-Vue.use(VueRouter)
-
-const routes: Array<RouteConfig> = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
     name: 'login',
@@ -14,7 +10,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     redirect: 'service',
-    component: Layout,
+    component: () => import(/* webpackChunkName: "layout" */ '@/views/Layout.vue'),
     children: [
       {
         path: '/service',
@@ -51,7 +47,8 @@ const routes: Array<RouteConfig> = [
 
 ]
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 })
 

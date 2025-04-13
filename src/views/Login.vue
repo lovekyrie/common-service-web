@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import type { ElForm } from 'element-ui/types/form'
+import type { FormInstance } from 'element-plus'
 import router from '@/router'
-import store from '@/store'
-import { Message } from 'element-ui'
+import { useUserStore } from '@/store'
+import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 const { formRef, submit } = useSubmit()
 
+const store = useUserStore()
 const form = reactive({
   username: '',
   password: '',
@@ -23,19 +24,19 @@ const formRules = {
 }
 
 function useSubmit() {
-  const formRef = ref<ElForm>()
+  const formRef = ref<FormInstance>()
   async function submit() {
     try {
       if (formRef.value) {
         const res = await formRef.value.validate()
         if (res) {
-          store.commit('setUserInfo', form)
+          store.login(form.username, form.password)
           router.push({ name: 'service' })
         }
       }
     }
     catch (error) {
-      Message({
+      ElMessage({
         message: `登录失败${error}`,
         type: 'warning',
       })
@@ -52,7 +53,7 @@ function useSubmit() {
     <el-row :gutter="20">
       <el-col :span="12" :offset="6">
         <el-card>
-          <ElForm ref="formRef" :rules="formRules" :model="form">
+          <el-form ref="formRef" :rules="formRules" :model="form">
             <el-form-item label="用户名" prop="username">
               <el-input v-model="form.username" />
             </el-form-item>
@@ -65,7 +66,7 @@ function useSubmit() {
               </el-button>
               <el-button>取消</el-button>
             </el-form-item>
-          </ElForm>
+          </el-form>
         </el-card>
       </el-col>
     </el-row>

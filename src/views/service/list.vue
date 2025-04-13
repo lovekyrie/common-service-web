@@ -97,7 +97,7 @@ function useCheckbox() {
         </template>
       </el-table-column>
     </el-table>
-    <edit :show="showDialog" @close-dialog="handleCloseDialog" @submit="handleSubmit" />
+    <edit :show="showDialog" @closeDialog="handleCloseDialog" @submit="handleSubmit" />
   </el-card>
 </template>
 
