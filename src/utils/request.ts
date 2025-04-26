@@ -1,10 +1,10 @@
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import axios from 'axios'
-import { Message } from 'element-plus'
+import { showMessage } from './utils'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || '/api', // API 的基础URL
+  baseURL: '', // API 的基础URL
   timeout: 15000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ service.interceptors.response.use(
 
     // 这里可以根据后端的响应结构定制
     if (res.code !== 200) {
-      message.error(res.message || '请求失败')
+      showMessage(res.message || '请求失败', 'error')
       return Promise.reject(new Error(res.message || '请求失败'))
     }
     return res
@@ -52,23 +52,23 @@ service.interceptors.response.use(
           window.location.href = '/login'
           break
         case 403:
-          message.error('没有权限访问该资源')
+          showMessage('没有权限访问该资源', 'error')
           break
         case 404:
-          message.error('请求的资源不存在')
+          showMessage('请求的资源不存在', 'error')
           break
         case 500:
-          message.error('服务器错误')
+          showMessage('服务器错误', 'error')
           break
         default:
-          message.error('网络错误')
+          showMessage('网络错误', 'error')
       }
     }
     else if (error.request) {
-      message.error('网络连接失败，请检查网络')
+      showMessage('网络连接失败，请检查网络', 'error')
     }
     else {
-      message.error('请求配置错误')
+      showMessage('请求配置错误', 'error')
     }
 
     return Promise.reject(error)
