@@ -4,7 +4,7 @@ import { showMessage } from './utils'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '', // API 的基础URL
+  baseURL: '/api', // API 的基础URL
   timeout: 15000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ service.interceptors.response.use(
       showMessage(res.message || '请求失败', 'error')
       return Promise.reject(new Error(res.message || '请求失败'))
     }
-    return res
+    return res.data
   },
   (error: AxiosError) => {
     console.error('Response error:', error)
