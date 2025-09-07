@@ -106,30 +106,98 @@ function useCheckbox() {
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .hello-container {
   position: relative;
   height: 100vh;
   overflow: hidden;
-}
 
-.button-row {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background-color: #ffffff;
-  padding: 16px;
-  border-bottom: 1px solid #ebebeb;
-}
+  .button-row {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: $background-color;
+    padding: $padding-base;
+    border-bottom: 1px solid $border-color-light;
+    @include flex-center-vertical;
 
-.table-container {
-  height: calc(100vh - 120px);
-  overflow-y: auto;
-  padding: 0 16px 16px 16px;
-}
+    .el-row {
+      width: 100%;
+    }
 
-.service-table {
-  border-radius: 3px;
-  border: 1px solid #ebebeb;
+    .el-button {
+      margin-right: $margin-sm;
+      
+      &:last-child {
+        margin-right: 0;
+      }
+
+      // 使用混入自定义按钮样式
+      &.el-button--primary {
+        @include button-variant($background-color, $primary-color, $primary-color);
+      }
+
+      &.el-button--danger {
+        @include button-variant($background-color, $danger-color, $danger-color);
+      }
+    }
+  }
+
+  .table-container {
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding: 0 $padding-base $padding-base $padding-base;
+
+    .service-table {
+      border-radius: $border-radius-base;
+      border: 1px solid $border-color-light;
+      box-shadow: $box-shadow-base;
+
+      // 表格行悬停效果
+      :deep(.el-table__row) {
+        &:hover {
+          background-color: $background-color-base;
+        }
+      }
+
+      // 表格头部样式
+      :deep(.el-table__header-wrapper) {
+        .el-table__header {
+          th {
+            background-color: $background-color-base;
+            color: $text-color-primary;
+            font-weight: 600;
+          }
+        }
+      }
+
+      // 操作按钮样式
+      .el-button {
+        &--info {
+          @include button-variant($background-color, $info-color, $info-color);
+        }
+
+        &--danger {
+          @include button-variant($background-color, $danger-color, $danger-color);
+        }
+      }
+    }
+  }
+
+  // 响应式设计
+  @include respond-to(xs) {
+    .button-row {
+      padding: $padding-sm;
+      
+      .el-button {
+        font-size: $font-size-xs;
+        padding: 6px 12px;
+      }
+    }
+
+    .table-container {
+      padding: 0 $padding-sm $padding-sm $padding-sm;
+    }
+  }
 }
 </style>

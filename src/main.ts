@@ -5,6 +5,7 @@ import router from './router'
 import store from './store'
 
 import './style/index.css'
+import './assets/styles/global.scss'
 import './permission'
 import './load-third-components'
 
