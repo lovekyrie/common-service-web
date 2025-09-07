@@ -9,6 +9,17 @@ module.exports = defineConfig({
     ],
     devtool: 'source-map',
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        // 全局引入 sass 变量和 mixins（可选）
+        additionalData: `
+          // @import "@/assets/styles/variables.scss";
+          // @import "@/assets/styles/mixins.scss";
+        `,
+      },
+    },
+  },
   devServer: {
     hot: true,
     client: {
