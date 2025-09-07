@@ -72,7 +72,7 @@ function useCheckbox() {
 
 <template>
   <el-card class="hello-container">
-    <el-row>
+    <el-row class="toolbar-sticky">
       <el-col :span="24">
         <el-button type="primary" @click="create">
           新增
@@ -107,5 +107,12 @@ function useCheckbox() {
   margin-top: 10px;
   border-radius: 3px;
   border: 1px solid #ebebeb;
+}
+
+.toolbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--el-bg-color, #fff);
 }
 </style>
