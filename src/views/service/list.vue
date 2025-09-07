@@ -72,17 +72,20 @@ function useCheckbox() {
 
 <template>
   <el-card class="hello-container">
-    <el-row>
-      <el-col :span="24">
-        <el-button type="primary" @click="create">
-          新增
-        </el-button>
-        <el-button type="danger" @click="batchDel">
-          删除
-        </el-button>
-      </el-col>
-    </el-row>
-    <el-table :data="tableData" class="service-table" @selection-change="selectionChange">
+    <div class="button-row">
+      <el-row>
+        <el-col :span="24">
+          <el-button type="primary" @click="create">
+            新增
+          </el-button>
+          <el-button type="danger" @click="batchDel">
+            删除
+          </el-button>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="table-container">
+      <el-table :data="tableData" class="service-table" @selection-change="selectionChange">
       <el-table-column v-for="item, index in tableColumns" :key="index" :prop="item.prop" :label="item.label" :width="item.width" :type="item.type">
         <template v-if="item.prop" #default="scope">
           <div v-if="item.prop === 'opreator'">
@@ -97,14 +100,35 @@ function useCheckbox() {
         </template>
       </el-table-column>
     </el-table>
+    </div>
     <edit :show="showDialog" @close-dialog="handleCloseDialog" @submit="handleSubmit" />
   </el-card>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.button-row {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  padding: 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.table-container {
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 0 16px 16px 16px;
+}
+
 .service-table {
-  margin-top: 10px;
   border-radius: 3px;
   border: 1px solid #ebebeb;
 }
