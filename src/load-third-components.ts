@@ -1,4 +1,4 @@
-import { Aside, Button, Card, Checkbox, Col, Container, DatePicker, Dialog, Footer, Form, FormItem, Header, Input, Main, Menu, MenuItem, MenuItemGroup, Radio, RadioButton, RadioGroup, Row, Submenu, Table, TableColumn } from 'element-ui'
+import { Alert, Aside, Button, Card, Checkbox, Col, Container, DatePicker, Dialog, Dropdown, DropdownItem, DropdownMenu, Footer, Form, FormItem, Header, Icon, Input, Main, Menu, MenuItem, MenuItemGroup, Message, MessageBox, Radio, RadioButton, RadioGroup, Row, Submenu, Table, TableColumn, Tree } from 'element-ui'
 import Vue from 'vue'
 
 Vue.component(Container.name, Container)
@@ -25,3 +25,14 @@ Vue.component(MenuItemGroup.name, MenuItemGroup)
 Vue.component(Radio.name, Radio)
 Vue.component(RadioButton.name, RadioButton)
 Vue.component(RadioGroup.name, RadioGroup)
+Vue.component(Alert.name, Alert)
+Vue.component(Icon.name, Icon)
+Vue.component(Tree.name, Tree)
+Vue.component(Dropdown.name, Dropdown)
+Vue.component(DropdownMenu.name, DropdownMenu)
+Vue.component(DropdownItem.name, DropdownItem)
+
+// 全局注册Message和MessageBox
+Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$alert = MessageBox.alert

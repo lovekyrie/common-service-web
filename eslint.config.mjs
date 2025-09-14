@@ -5,4 +5,7 @@ export default antfu({
   vue: {
     vueVersion: 2,
   },
+  rules: {
+    'vue/custom-event-name-casing': 'off',
+  },
 })

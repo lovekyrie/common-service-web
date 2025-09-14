@@ -16,6 +16,13 @@ const menus = [
     ],
   },
   {
+    text: '费用管理',
+    icon: 'el-icon-money',
+    subMenus: [
+      { text: '费用类型', routerName: 'expenseType' },
+    ],
+  },
+  {
     text: '关于我们',
     icon: 'el-icon-message',
     routerName: 'about',
