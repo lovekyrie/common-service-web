@@ -1,5 +1,5 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import UploadModal from './UploadModal.vue'
 
 interface UploadResult {
@@ -9,75 +9,59 @@ interface UploadResult {
   data?: any
 }
 
-export default defineComponent({
-  name: 'UploadExample',
-  components: {
-    UploadModal,
-  },
-  setup() {
-    const uploadModalVisible = ref(false)
-    const imageUploadModalVisible = ref(false)
-    const uploadResults = ref<UploadResult[]>([])
+const uploadModalVisible = ref(false)
+const imageUploadModalVisible = ref(false)
+const uploadResults = ref<UploadResult[]>([])
+const dialogVisible = ref(false)
 
-    const showUploadModal = () => {
-      uploadModalVisible.value = true
-    }
+function handleClose() {
+  dialogVisible.value = false
+}
 
-    const closeUploadModal = () => {
-      uploadModalVisible.value = false
-    }
+function showUploadModal() {
+  uploadModalVisible.value = true
+}
 
-    const showImageUploadModal = () => {
-      imageUploadModalVisible.value = true
-    }
+function closeUploadModal() {
+  uploadModalVisible.value = false
+}
 
-    const closeImageUploadModal = () => {
-      imageUploadModalVisible.value = false
-    }
+function showImageUploadModal() {
+  imageUploadModalVisible.value = true
+}
 
-    const handleUploadSuccess = (result: any) => {
-      console.log('Upload success:', result)
-      uploadResults.value.push({
-        fileName: '批量文件',
-        success: true,
-        message: '文件上传成功',
-        data: result,
-      })
-    }
+function closeImageUploadModal() {
+  imageUploadModalVisible.value = false
+}
 
-    const handleImageUploadSuccess = (result: any) => {
-      console.log('Image upload success:', result)
-      uploadResults.value.push({
-        fileName: '图片文件',
-        success: true,
-        message: '图片上传成功',
-        data: result,
-      })
-    }
+function handleUploadSuccess(result: any) {
+  console.log('Upload success:', result)
+  uploadResults.value.push({
+    fileName: '批量文件',
+    success: true,
+    message: '文件上传成功',
+    data: result,
+  })
+}
 
-    const handleUploadError = (error: any) => {
-      console.error('Upload error:', error)
-      uploadResults.value.push({
-        fileName: '文件',
-        success: false,
-        message: error.message || '上传失败',
-      })
-    }
+function handleImageUploadSuccess(result: any) {
+  console.log('Image upload success:', result)
+  uploadResults.value.push({
+    fileName: '图片文件',
+    success: true,
+    message: '图片上传成功',
+    data: result,
+  })
+}
 
-    return {
-      uploadModalVisible,
-      imageUploadModalVisible,
-      uploadResults,
-      showUploadModal,
-      closeUploadModal,
-      showImageUploadModal,
-      closeImageUploadModal,
-      handleUploadSuccess,
-      handleImageUploadSuccess,
-      handleUploadError,
-    }
-  },
-})
+function handleUploadError(error: any) {
+  console.error('Upload error:', error)
+  uploadResults.value.push({
+    fileName: '文件',
+    success: false,
+    message: error.message || '上传失败',
+  })
+}
 </script>
 
 <template>
@@ -92,8 +76,30 @@ export default defineComponent({
       <button class="btn btn-secondary" @click="showImageUploadModal">
         仅上传图片
       </button>
+      <el-button plain @click="dialogVisible = true">
+        测试element-plus弹窗
+      </el-button>
     </div>
 
+    <el-dialog
+      v-model="dialogVisible"
+      title="Tips"
+      width="500"
+      :before-close="handleClose"
+      modal-class="test-element-plus-dialog"
+    >
+      <span>This is a message</span>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">
+            Cancel
+          </el-button>
+          <el-button type="primary" @click="dialogVisible = false">
+            Confirm
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
     <!-- 通用上传弹窗 -->
     <UploadModal
       :visible="uploadModalVisible"
@@ -102,8 +108,8 @@ export default defineComponent({
       :allowed-types="['image/*', 'application/pdf', 'text/*']"
       upload-url="/api/upload"
       @close="closeUploadModal"
-      @upload-success="handleUploadSuccess"
-      @upload-error="handleUploadError"
+      @uploadSuccess="handleUploadSuccess"
+      @uploadError="handleUploadError"
     />
 
     <!-- 仅图片上传弹窗 -->
@@ -136,7 +142,13 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.test-element-plus-dialog {
+  ::v-deep(.el-dialog__body) {
+    padding: 20px;
+  }
+}
+
 .upload-example {
   padding: 20px;
   max-width: 800px;

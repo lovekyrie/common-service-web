@@ -39,6 +39,7 @@ export default defineComponent({
     const isDragOver = ref(false)
     const uploadedFiles = ref<UploadFile[]>([])
     const isUploading = ref(false)
+    const dragCounter = ref(0) // 用于跟踪拖拽进入/离开的次数
 
     const acceptTypes = computed(() => {
       return props.allowedTypes.join(',')
@@ -53,6 +54,7 @@ export default defineComponent({
       uploadedFiles.value = []
       isDragOver.value = false
       isUploading.value = false
+      dragCounter.value = 0
     }
 
     const handleOverlayClick = (event: Event) => {
@@ -67,26 +69,50 @@ export default defineComponent({
 
     const handleDragOver = (event: DragEvent) => {
       event.preventDefault()
-      isDragOver.value = true
+      // 检查是否包含文件
+      if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+        // 只有文件拖拽才允许
+        event.dataTransfer.dropEffect = 'copy'
+      }
+      else {
+        // 非文件拖拽不允许
+        if (event.dataTransfer) {
+          event.dataTransfer.dropEffect = 'none'
+        }
+      }
     }
 
     const handleDragEnter = (event: DragEvent) => {
       event.preventDefault()
-      isDragOver.value = true
+      // 只有文件拖拽才显示样式
+      if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+        dragCounter.value++
+        isDragOver.value = true
+      }
     }
 
     const handleDragLeave = (event: DragEvent) => {
       event.preventDefault()
-      isDragOver.value = false
+      // 只有文件拖拽才处理状态变化
+      if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+        dragCounter.value--
+        if (dragCounter.value === 0) {
+          isDragOver.value = false
+        }
+      }
     }
 
     const handleDrop = (event: DragEvent) => {
       event.preventDefault()
       isDragOver.value = false
+      dragCounter.value = 0
 
-      const files = event.dataTransfer?.files
-      if (files) {
-        addFiles(Array.from(files))
+      // 只有文件拖拽才处理
+      if (event.dataTransfer && event.dataTransfer.types.includes('Files')) {
+        const files = event.dataTransfer.files
+        if (files && files.length > 0) {
+          addFiles(Array.from(files))
+        }
       }
     }
 
@@ -366,6 +392,12 @@ export default defineComponent({
   border-color: #1890ff;
   background-color: #e6f7ff;
   transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(24, 144, 255, 0.3);
+}
+
+/* 非文件拖拽时的样式 */
+.upload-area:not(.drag-over) {
+  transition: all 0.3s ease;
 }
 
 .upload-content {

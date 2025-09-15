@@ -1,20 +1,30 @@
 const { defineConfig } = require('@vue/cli-service')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const AutoImport = require('unplugin-auto-import/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+const Components = require('unplugin-vue-components/webpack')
 
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
       new BundleAnalyzerPlugin(),
-      require('unplugin-vue-components/webpack').default({
+      Components({
         resolvers: [ElementPlusResolver()],
       }),
-      require('unplugin-auto-import/webpack').default({
+      AutoImport({
         resolvers: [ElementPlusResolver()],
       }),
     ],
     devtool: 'source-map',
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        // 全局引入变量文件
+        additionalData: `@import "@/styles/variables.scss";`,
+      },
+    },
   },
   devServer: {
     hot: true,
