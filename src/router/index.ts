@@ -51,6 +51,11 @@ const routes: Array<RouteConfig> = [
         name: 'expenseType',
         component: () => import(/* webpackChunkName: "expenseType" */ '@/views/expenseType/index.vue'),
       },
+      {
+        path: '/accounting',
+        name: 'accounting',
+        component: () => import(/* webpackChunkName: "accounting" */ '@/views/accounting/index.vue'),
+      },
     ],
   },
 

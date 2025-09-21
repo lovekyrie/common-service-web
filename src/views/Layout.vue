@@ -23,6 +23,13 @@ const menus = [
     ],
   },
   {
+    text: '记账管理',
+    icon: 'el-icon-money',
+    subMenus: [
+      { text: '记账管理', routerName: 'accounting' },
+    ],
+  },
+  {
     text: '关于我们',
     icon: 'el-icon-message',
     routerName: 'about',
