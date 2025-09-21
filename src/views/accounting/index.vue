@@ -1,4 +1,5 @@
 <script>
+import { accountingApi } from '@/api'
 import AccountingList from './components/AccountingList.vue'
 import AddAccountingDialog from './components/AddAccountingDialog.vue'
 
@@ -11,41 +12,7 @@ export default {
   data() {
     return {
       showAddDialog: false,
-      accountingRecords: [
-        {
-          id: 3,
-          type: 'income',
-          amount: '500.00',
-          category: 'gift',
-          description: '生日礼金',
-          transaction_date: '2024-01-20',
-          payment_method: '现金',
-          created_at: '2025-09-20T12:59:01.996Z',
-          updated_at: '2025-09-20T12:59:01.996Z',
-        },
-        {
-          id: 2,
-          type: 'expense',
-          amount: '120.50',
-          category: 'food',
-          description: '午餐',
-          transaction_date: '2024-01-19',
-          payment_method: '支付宝',
-          created_at: '2025-09-20T12:58:01.996Z',
-          updated_at: '2025-09-20T12:58:01.996Z',
-        },
-        {
-          id: 1,
-          type: 'expense',
-          amount: '2500.00',
-          category: 'rent',
-          description: '房租',
-          transaction_date: '2024-01-01',
-          payment_method: '银行转账',
-          created_at: '2025-09-20T12:57:01.996Z',
-          updated_at: '2025-09-20T12:57:01.996Z',
-        },
-      ],
+      accountingRecords: [],
       loading: false,
     }
   },
@@ -66,7 +33,15 @@ export default {
       return (Number.parseFloat(this.totalIncome) - Number.parseFloat(this.totalExpense)).toFixed(2)
     },
   },
+  mounted() {
+    this.getAccountingList()
+  },
   methods: {
+    async getAccountingList() {
+      const res = await accountingApi.getAccountingList()
+      this.accountingRecords = res.data
+    },
+
     handleAdd() {
       this.showAddDialog = true
     },
