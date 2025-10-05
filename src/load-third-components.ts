@@ -1,4 +1,4 @@
-import { Alert, Aside, Button, Card, Checkbox, Col, Container, DatePicker, Dialog, Dropdown, DropdownItem, DropdownMenu, Footer, Form, FormItem, Header, Icon, Input, Main, Menu, MenuItem, MenuItemGroup, Message, MessageBox, Option, Radio, RadioButton, RadioGroup, Row, Select, Submenu, Table, TableColumn, Tree } from 'element-ui'
+import { Alert, Aside, Button, Card, Checkbox, Col, Container, DatePicker, Dialog, Dropdown, DropdownItem, DropdownMenu, Footer, Form, FormItem, Header, Icon, Input, Main, Menu, MenuItem, MenuItemGroup, Message, MessageBox, Option, Radio, RadioButton, RadioGroup, Row, Select, Submenu, Table, TableColumn, Tag, Tree } from 'element-ui'
 import Vue from 'vue'
 
 Vue.component(Container.name, Container)
@@ -33,7 +33,7 @@ Vue.component(DropdownMenu.name, DropdownMenu)
 Vue.component(DropdownItem.name, DropdownItem)
 Vue.component(Option.name, Option)
 Vue.component(Select.name, Select)
-
+Vue.component(Tag.name, Tag)
 // 全局注册Message和MessageBox
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

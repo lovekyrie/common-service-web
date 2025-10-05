@@ -29,9 +29,7 @@ module.exports = defineConfig({
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
+        // 移除 pathRewrite，保持 /api 前缀
       },
     },
   },

@@ -46,18 +46,25 @@ export default {
       this.showAddDialog = true
     },
 
-    handleAddConfirm(recordData) {
+    async handleAddConfirm(recordData) {
       // 模拟添加记录
       const newRecord = {
-        id: Date.now(),
         ...recordData,
+        amount: Number.parseFloat(recordData.amount), // 转换为数字
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       }
 
-      this.accountingRecords.unshift(newRecord)
-      this.showAddDialog = false
-      this.$message.success('记账记录添加成功')
+      // 调用api添加记录
+      const res = await accountingApi.createAccounting(newRecord)
+      if (res.success) {
+        this.getAccountingList()
+        this.showAddDialog = false
+        this.$message.success(res.message)
+      }
+      else {
+        this.$message.error(res.message)
+      }
     },
 
     handleAddCancel() {
@@ -66,6 +73,8 @@ export default {
 
     handleEdit(record) {
       this.$message.info('编辑功能待实现')
+      console.log(record)
+      throw new Error('not implemented')
     },
 
     handleDelete(record) {
