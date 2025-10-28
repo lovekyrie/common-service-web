@@ -5,7 +5,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
-      new BundleAnalyzerPlugin(),
+      // 只在开发环境启用Bundle Analyzer
+      ...(process.env.NODE_ENV === 'development' ? [new BundleAnalyzerPlugin()] : []),
     ],
     devtool: 'source-map',
   },
