@@ -27,7 +27,7 @@ module.exports = defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://feng-fortitude.com:3001',
         changeOrigin: true,
         // 移除 pathRewrite，保持 /api 前缀
       },

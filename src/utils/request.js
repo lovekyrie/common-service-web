@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: '', // 后端服务地址
+  baseURL: process.env.VUE_APP_BASE_URL || '', // 后端服务地址（从环境变量读取）
   timeout: 10000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',

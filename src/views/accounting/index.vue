@@ -82,12 +82,10 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
-      }).then(() => {
-        const index = this.accountingRecords.findIndex(item => item.id === record.id)
-        if (index > -1) {
-          this.accountingRecords.splice(index, 1)
-          this.$message.success('删除成功')
-        }
+      }).then(async () => {
+        await accountingApi.deleteAccounting(record.id)
+        this.getAccountingList()
+        this.$message.success('删除成功')
       }).catch(() => {
         this.$message.info('已取消删除')
       })
