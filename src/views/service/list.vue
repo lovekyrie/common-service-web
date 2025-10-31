@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { Service } from '@/utils/types/service'
-import { getPostByParams } from '@/api/service'
 import { v4 as uuidv4 } from 'uuid'
 import { ref } from 'vue'
 import UploadExample from '../components/UploadExample.vue'
@@ -9,12 +8,6 @@ import edit from './components/edit.vue'
 const { create, batchDel, showDialog, handleCloseDialog, handleSubmit } = useOperator()
 const { selectionChange, chooseList } = useCheckbox()
 const { deleteSingle } = useTableOperator()
-
-// async function loadPost() {
-//   const res = await getPostByParams()
-//   console.log(res)
-// }
-// loadPost()
 
 const tableItem: Service = {
   date: '2025-04-08',
@@ -105,7 +98,7 @@ function useCheckbox() {
         </template>
       </el-table-column>
     </el-table>
-    <edit :show="showDialog" @closeDialog="handleCloseDialog" @submit="handleSubmit" />
+    <edit :show="showDialog" @close-dialog="handleCloseDialog" @submit="handleSubmit" />
     <UploadExample />
   </el-card>
 </template>

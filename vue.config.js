@@ -8,21 +8,25 @@ module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
-      new BundleAnalyzerPlugin(),
       Components({
         resolvers: [ElementPlusResolver()],
       }),
       AutoImport({
         resolvers: [ElementPlusResolver()],
       }),
+      // 只在开发环境启用Bundle Analyzer
+      ...(process.env.NODE_ENV === 'development' ? [new BundleAnalyzerPlugin()] : []),
     ],
     devtool: 'source-map',
   },
   css: {
     loaderOptions: {
       sass: {
-        // 全局引入变量文件
-        additionalData: `@import "@/styles/variables.scss";`,
+        // 全局引入 sass 变量和 mixins（可选）
+        additionalData: `
+          // @import "@/assets/styles/variables.scss";
+          // @import "@/assets/styles/mixins.scss";
+        `,
       },
     },
   },
@@ -33,8 +37,9 @@ module.exports = defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://feng-fortitude.com',
         changeOrigin: true,
+        // 移除 pathRewrite，保持 /api 前缀
       },
     },
   },
