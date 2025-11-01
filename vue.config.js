@@ -1,10 +1,19 @@
 const { defineConfig } = require('@vue/cli-service')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const AutoImport = require('unplugin-auto-import/webpack')
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+const Components = require('unplugin-vue-components/webpack')
 
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [
+      Components({
+        resolvers: [ElementPlusResolver()],
+      }),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
       // 只在开发环境启用Bundle Analyzer
       ...(process.env.NODE_ENV === 'development' ? [new BundleAnalyzerPlugin()] : []),
     ],
@@ -30,7 +39,6 @@ module.exports = defineConfig({
       '/api': {
         target: 'https://feng-fortitude.com',
         changeOrigin: true,
-        // 移除 pathRewrite，保持 /api 前缀
       },
     },
   },

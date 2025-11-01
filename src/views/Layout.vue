@@ -41,6 +41,7 @@ const menus = [
       return { ...s, index: `${i}-${j}` }
     }),
     index: `${i}`,
+    index1: `${i}`,
   }
 })
 </script>
@@ -53,7 +54,7 @@ const menus = [
         <el-aside width="200px">
           <el-menu>
             <template v-for="menu in menus">
-              <el-submenu v-if="menu.subMenus && menu.subMenus.length" :key="menu.index" :index="menu.index">
+              <el-sub-menu v-if="menu.subMenus && menu.subMenus.length" :key="menu.index" :index="menu.index">
                 <template #title>
                   <i :class="menu.icon" />
                   <span>{{ menu.text }}</span>
@@ -65,11 +66,13 @@ const menus = [
                     </el-menu-item>
                   </router-link>
                 </el-menu-item-group>
-              </el-submenu>
-              <router-link v-else :key="menu.index" :to="{ name: menu.routerName }">
+              </el-sub-menu>
+              <router-link v-else :key="menu.index1" :to="{ name: menu.routerName }">
                 <el-menu-item :index="menu.index">
                   <i :class="menu.icon" />
-                  <span slot="title">{{ menu.text }}</span>
+                  <template #title>
+                    {{ menu.text }}
+                  </template>
                 </el-menu-item>
               </router-link>
             </template>

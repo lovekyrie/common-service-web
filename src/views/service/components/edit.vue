@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { ElForm } from 'element-ui/types/form'
+import type { FormInstance } from 'element-plus'
 import { phoneValid } from '@/utils/validator'
-import { Message } from 'element-ui'
+import { ElMessage } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid'
-import { defineProps, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 const props = defineProps({
   show: {
@@ -12,7 +12,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['close-dialog', 'submit'])
+const emit = defineEmits(['closeDialog', 'submit'])
 
 const dialogVisible = ref<boolean>(props.show)
 watch(() => props.show, (val) => {
@@ -40,9 +40,9 @@ const formRules = {
 }
 
 function closeDialog() {
-  emit('close-dialog')
+  emit('closeDialog')
 }
-const formRef = ref<ElForm>()
+const formRef = ref<FormInstance>()
 async function submit() {
   try {
     if (formRef.value) {
@@ -53,14 +53,13 @@ async function submit() {
     }
   }
   catch (error: any) {
-    Message({
+    ElMessage({
       message: `请输入正确的内容再提交`,
       type: 'warning',
     })
     throw new Error(error)
   }
 }
-
 </script>
 
 <template>
