@@ -4,7 +4,7 @@ import { showMessage } from './utils'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: '/api', // API 的基础URL
+  baseURL: '', // API 的基础URL
   timeout: 15000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
@@ -34,11 +34,11 @@ service.interceptors.response.use(
     const res = response.data
 
     // 这里可以根据后端的响应结构定制
-    if (res.code !== 200) {
+    if (!res.success) {
       showMessage(res.message || '请求失败', 'error')
       return Promise.reject(new Error(res.message || '请求失败'))
     }
-    return res.data
+    return res
   },
   (error: AxiosError) => {
     console.error('Response error:', error)
@@ -95,5 +95,32 @@ export function del<T = any>(url: string, config?: AxiosRequestConfig): Promise<
   return service.delete(url, config)
 }
 
+// 封装 DELETE 请求（别名）
+export function deleteRequest<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  return service.delete(url, config)
+}
+
+// 封装上传文件请求
+export function upload<T = any>(url: string, formData: FormData, config?: AxiosRequestConfig): Promise<T> {
+  return service.post(url, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    ...config,
+  })
+}
+
+// 创建一个封装的对象用于导出
+const request = {
+  get,
+  post,
+  put,
+  delete: deleteRequest,
+  upload,
+  deleteRequest,
+  del,
+}
+
 // 导出 axios 实例，以便需要时可以直接使用
-export default service
+export default request
+export { service }

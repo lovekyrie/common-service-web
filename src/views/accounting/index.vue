@@ -1,34 +1,43 @@
-<script setup>
+<script setup lang="ts">
+import type { AccountingRecord, CreateAccountingInput } from '@/api/index'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { computed, onMounted, ref } from 'vue'
-import { accountingApi } from '@/api'
+import { createAccounting, deleteAccounting, queryAccountingList } from '@/api/index'
 import AccountingList from './components/AccountingList.vue'
 import AddAccountingDialog from './components/AddAccountingDialog.vue'
 
 const showAddDialog = ref(false)
-const accountingRecords = ref([])
+const accountingRecords = ref<AccountingRecord[]>([])
 const loading = ref(false)
 
 const totalIncome = computed(() => {
   return accountingRecords.value
     .filter(record => record.type === 'income')
-    .reduce((sum, record) => sum + Number.parseFloat(record.amount), 0)
+    .reduce((sum, record) => {
+      return sum + Number.parseFloat(record.amount)
+    }, 0)
     .toFixed(2)
 })
 
 const totalExpense = computed(() => {
   return accountingRecords.value
     .filter(record => record.type === 'expense')
-    .reduce((sum, record) => sum + Number.parseFloat(record.amount), 0)
+    .reduce((sum, record) => {
+      const amount = typeof record.amount === 'string' ? Number.parseFloat(record.amount) : record.amount
+      return sum + amount
+    }, 0)
     .toFixed(2)
 })
 
 const balance = computed(() => {
-  return (Number.parseFloat(totalIncome.value) - Number.parseFloat(totalExpense.value)).toFixed(2)
+  const numBalance = Number.parseFloat(totalIncome.value) - Number.parseFloat(totalExpense.value)
+  return numBalance.toFixed(2)
 })
 
+const isBalancePositive = computed(() => Number.parseFloat(balance.value) >= 0)
+
 async function getAccountingList() {
-  const res = await accountingApi.getAccountingList()
+  const res = await queryAccountingList()
   accountingRecords.value = res.data
 }
 
@@ -36,17 +45,17 @@ function handleAdd() {
   showAddDialog.value = true
 }
 
-async function handleAddConfirm(recordData) {
-  // 模拟添加记录
-  const newRecord = {
+async function handleAddConfirm(recordData: AccountingRecord) {
+  // 转换为创建接口需要的格式
+  const createData: CreateAccountingInput = {
     ...recordData,
-    amount: Number.parseFloat(recordData.amount), // 转换为数字
+    amount: Number.parseFloat(recordData.amount),
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   }
 
   // 调用api添加记录
-  const res = await accountingApi.createAccounting(newRecord)
+  const res = await createAccounting(createData)
   if (res.success) {
     getAccountingList()
     showAddDialog.value = false
@@ -61,19 +70,19 @@ function handleAddCancel() {
   showAddDialog.value = false
 }
 
-function handleEdit(record) {
+function handleEdit(record: AccountingRecord) {
   ElMessage.info('编辑功能待实现')
   console.log(record)
   throw new Error('not implemented')
 }
 
-function handleDelete(record) {
+function handleDelete(record: AccountingRecord) {
   ElMessageBox.confirm('确定要删除这条记账记录吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(async () => {
-    await accountingApi.deleteAccounting(record.id)
+    await deleteAccounting(record.id)
     getAccountingList()
     ElMessage.success('删除成功')
   }).catch(() => {
@@ -140,7 +149,7 @@ onMounted(() => {
             <div class="stat-label">
               结余
             </div>
-            <div class="stat-value" :class="{ positive: balance >= 0, negative: balance < 0 }">
+            <div class="stat-value" :class="{ positive: isBalancePositive, negative: !isBalancePositive }">
               ¥{{ balance }}
             </div>
           </div>

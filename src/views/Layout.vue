@@ -70,7 +70,9 @@ const menus = [
               <router-link v-else :key="menu.index1" :to="{ name: menu.routerName }">
                 <el-menu-item :index="menu.index">
                   <i :class="menu.icon" />
-                  <span slot="title">{{ menu.text }}</span>
+                  <template #title>
+                    {{ menu.text }}
+                  </template>
                 </el-menu-item>
               </router-link>
             </template>

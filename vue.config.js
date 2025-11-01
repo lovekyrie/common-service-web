@@ -39,7 +39,6 @@ module.exports = defineConfig({
       '/api': {
         target: 'https://feng-fortitude.com',
         changeOrigin: true,
-        // 移除 pathRewrite，保持 /api 前缀
       },
     },
   },

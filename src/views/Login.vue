@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
-import router from '@/router'
-import { useUserStore } from '@/store'
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
+import router from '@/router'
+import { useUserStore } from '@/store'
 
 const { formRef, submit } = useSubmit()
 
