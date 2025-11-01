@@ -1,91 +1,90 @@
-<script>
-export default {
-  name: 'AccountingList',
-  props: {
-    records: {
-      type: Array,
-      default: () => [],
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+<script setup>
+import { ref } from 'vue'
+
+defineProps({
+  records: {
+    type: Array,
+    default: () => [],
   },
-  data() {
-    return {
-      typeOptions: {
-        income: { label: '收入', color: '#67c23a', icon: 'el-icon-plus' },
-        expense: { label: '支出', color: '#f56c6c', icon: 'el-icon-minus' },
-      },
-      categoryOptions: {
-        // 收入分类
-        salary: '工资',
-        bonus: '奖金',
-        investment: '投资收益',
-        gift: '礼金',
-        other_income: '其他收入',
-        // 支出分类
-        food: '餐饮',
-        transport: '交通',
-        shopping: '购物',
-        entertainment: '娱乐',
-        rent: '房租',
-        utilities: '水电费',
-        healthcare: '医疗',
-        education: '教育',
-        other_expense: '其他支出',
-      },
-      paymentMethodOptions: {
-        cash: '现金',
-        alipay: '支付宝',
-        wechat: '微信',
-        bank_card: '银行卡',
-        credit_card: '信用卡',
-        bank_transfer: '银行转账',
-      },
-    }
+  loading: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    getTypeConfig(type) {
-      return this.typeOptions[type] || { label: type, color: '#909399', icon: 'el-icon-question' }
-    },
+})
 
-    getCategoryLabel(category) {
-      return this.categoryOptions[category] || category
-    },
+const emit = defineEmits(['edit', 'delete'])
 
-    getPaymentMethodLabel(method) {
-      return this.paymentMethodOptions[method] || method
-    },
+const typeOptions = ref({
+  income: { label: '收入', color: '#67c23a', icon: 'Plus' },
+  expense: { label: '支出', color: '#f56c6c', icon: 'Minus' },
+})
 
-    formatDate(dateString) {
-      const date = new Date(dateString)
-      return date.toLocaleDateString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      })
-    },
+const categoryOptions = ref({
+  // 收入分类
+  salary: '工资',
+  bonus: '奖金',
+  investment: '投资收益',
+  gift: '礼金',
+  other_income: '其他收入',
+  // 支出分类
+  food: '餐饮',
+  transport: '交通',
+  shopping: '购物',
+  entertainment: '娱乐',
+  rent: '房租',
+  utilities: '水电费',
+  healthcare: '医疗',
+  education: '教育',
+  other_expense: '其他支出',
+})
 
-    formatDateTime(dateString) {
-      const date = new Date(dateString)
-      return date.toLocaleString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-    },
+const paymentMethodOptions = ref({
+  cash: '现金',
+  alipay: '支付宝',
+  wechat: '微信',
+  bank_card: '银行卡',
+  credit_card: '信用卡',
+  bank_transfer: '银行转账',
+})
 
-    handleEdit(record) {
-      this.$emit('edit', record)
-    },
+function getTypeConfig(type) {
+  return typeOptions.value[type] || { label: type, color: '#909399', icon: 'QuestionFilled' }
+}
 
-    handleDelete(record) {
-      this.$emit('delete', record)
-    },
-  },
+function getCategoryLabel(category) {
+  return categoryOptions.value[category] || category
+}
+
+function getPaymentMethodLabel(method) {
+  return paymentMethodOptions.value[method] || method
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+}
+
+function formatDateTime(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+function handleEdit(record) {
+  emit('edit', record)
+}
+
+function handleDelete(record) {
+  emit('delete', record)
 }
 </script>
 
@@ -100,7 +99,7 @@ export default {
         empty-text="暂无记账记录"
       >
         <el-table-column label="类型" width="100" align="center">
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-tag
               :type="scope.row.type === 'income' ? 'success' : 'danger'"
               size="small"
@@ -112,7 +111,7 @@ export default {
         </el-table-column>
 
         <el-table-column label="金额" prop="amount" width="120" align="right">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span
               class="amount"
               :class="scope.row.type === 'income' ? 'income' : 'expense'"
@@ -123,13 +122,13 @@ export default {
         </el-table-column>
 
         <el-table-column label="分类" prop="category" width="120">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ getCategoryLabel(scope.row.category) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="描述" prop="description" min-width="150">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span :title="scope.row.description">
               {{ scope.row.description || '-' }}
             </span>
@@ -137,25 +136,25 @@ export default {
         </el-table-column>
 
         <el-table-column label="交易日期" prop="transaction_date" width="120">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ formatDate(scope.row.transaction_date) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="支付方式" prop="payment_method" width="120">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ getPaymentMethodLabel(scope.row.payment_method) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="创建时间" prop="created_at" width="150">
-          <template slot-scope="scope">
+          <template #default="scope">
             <span>{{ formatDateTime(scope.row.created_at) }}</span>
           </template>
         </el-table-column>
 
         <el-table-column label="操作" width="150" align="center" fixed="right">
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-button
               type="text"
               size="small"
