@@ -35,6 +35,15 @@ module.exports = defineConfig({
     client: {
       webSocketURL: 'ws://0.0.0.0:8080/ws',
     },
+    // 配置 historyApiFallback，排除 /api 路径，确保 API 请求走代理
+    historyApiFallback: {
+      disableDotRule: true,
+      // 只对非 API 路径进行路由回退
+      rewrites: [
+        { from: /^\/api/, to: false }, // 排除 /api 路径，不走 historyApiFallback
+        { from: /./, to: '/index.html' }, // 其他路径回退到 index.html
+      ],
+    },
     proxy: {
       '/api': {
         target: 'https://feng-fortitude.com',
