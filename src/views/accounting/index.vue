@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AccountingRecord, CreateAccountingInput } from '@/api/index'
+import { Plus, Refresh } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { computed, onMounted, ref } from 'vue'
 import { createAccounting, deleteAccounting, queryAccountingList } from '@/api/index'
@@ -165,13 +166,13 @@ onMounted(() => {
       <div class="action-right">
         <el-button
           type="default"
-          icon="el-icon-refresh"
+          :icon="Refresh"
           :loading="loading"
           @click="handleRefresh"
         >
           刷新
         </el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">
+        <el-button type="primary" :icon="Plus" @click="handleAdd">
           新增记账
         </el-button>
       </div>
