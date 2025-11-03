@@ -23,6 +23,11 @@ const menus = [
     ],
   },
   {
+    text: '知识库',
+    icon: 'el-icon-collection',
+    routerName: 'knowledge',
+  },
+  {
     text: '记账管理',
     icon: 'el-icon-money',
     subMenus: [
