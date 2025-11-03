@@ -43,6 +43,11 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
+        path: '/knowledge',
+        name: 'knowledge',
+        component: () => import(/* webpackChunkName: "knowledge" */ '@/views/knowledge/index.vue'),
+      },
+      {
         path: '/expense-type',
         name: 'expenseType',
         component: () => import(/* webpackChunkName: "expenseType" */ '@/views/expenseType/index.vue'),
