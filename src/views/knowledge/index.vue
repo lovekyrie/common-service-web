@@ -61,10 +61,10 @@ const isSyncing = ref(false)
 
 // 监听左侧知识库选择变化，同步到右侧文件选择
 watch(selectedLibIds, async (newVal, oldVal) => {
-  if (isSyncing.value)
-    return
+  // if (isSyncing.value)
+  //   return
 
-  isSyncing.value = true
+  // isSyncing.value = true
   await nextTick()
 
   try {
@@ -91,16 +91,17 @@ watch(selectedLibIds, async (newVal, oldVal) => {
   }
   finally {
     await nextTick()
-    isSyncing.value = false
+    // isSyncing.value = false
   }
 }, { deep: true })
 
 // 处理右侧表格选择变化，同步到左侧知识库选择
 function handleTableSelectionChange(selectedFiles: KnowledgeFileItem[]) {
-  if (isSyncing.value)
-    return
+  console.log('selectedFiles', selectedFiles)
+  // if (isSyncing.value)
+  //   return
 
-  isSyncing.value = true
+  // isSyncing.value = true
 
   try {
     // 按知识库ID分组统计

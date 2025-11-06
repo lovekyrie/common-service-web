@@ -34,7 +34,7 @@ service.interceptors.response.use(
     const res = response.data
 
     // 这里可以根据后端的响应结构定制
-    if (!res.success) {
+    if (res.code !== 200) {
       showMessage(res.message || '请求失败', 'error')
       return Promise.reject(new Error(res.message || '请求失败'))
     }
