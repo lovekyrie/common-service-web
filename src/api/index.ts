@@ -1,43 +1,28 @@
+import type { AccountingRecord, CreateAccountingInput } from '@/utils/types/accounting'
 import request from '../utils/request'
 
 /**
  * API 响应类型
  */
 interface ApiResponse<T = any> {
-  success: boolean
+  code: number
   data: T
   message?: string
 }
 
 /**
- * 记账记录类型（从服务器返回）
+ * 登录接口返回类型
+ * 在 ApiResponse 的基础上，data 中包含 access_token 字段
  */
-interface AccountingRecord {
-  id: number | string
-  type: 'income' | 'expense'
-  amount: string
-  category: string
-  description?: string
-  transaction_date: string
-  payment_method: string
-  created_at?: string
-  updated_at?: string
+interface LoginResponseData {
+  access_token: string
+  user: UserInfo
 }
 
 /**
- * 创建/更新记账记录请求类型（amount 为 number）
+ * 登录接口响应类型
  */
-interface CreateAccountingInput {
-  id?: number | string
-  type: 'income' | 'expense'
-  amount: number // 创建/更新时需要传数字
-  category: string
-  description?: string
-  transaction_date: string
-  payment_method: string
-  created_at?: string
-  updated_at?: string
-}
+type LoginResponse = ApiResponse<LoginResponseData>
 
 /**
  * 记账管理相关API
@@ -191,7 +176,7 @@ export const uploadApi = {
 }
 
 // 导出类型
-export type { AccountingRecord, ApiResponse, CreateAccountingInput, ExpenseType, LoginData, RegisterData, UploadResponse, UserInfo }
+export type { ApiResponse, ExpenseType, LoginData, LoginResponse, LoginResponseData, RegisterData, UploadResponse, UserInfo }
 
 // 默认导出所有API
 export default {

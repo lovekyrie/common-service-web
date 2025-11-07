@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AccountingRecord, CreateAccountingInput } from '@/api/index'
+import type { AccountingRecord, CreateAccountingInput } from '@/utils/types/accounting'
 import { Plus, Refresh } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { computed, onMounted, ref } from 'vue'
@@ -57,7 +57,7 @@ async function handleAddConfirm(recordData: AccountingRecord) {
 
   // 调用api添加记录
   const res = await createAccounting(createData)
-  if (res.success) {
+  if (res.code === 200) {
     getAccountingList()
     showAddDialog.value = false
     ElMessage.success(res.message)

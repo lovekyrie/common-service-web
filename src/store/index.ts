@@ -1,23 +1,27 @@
+import type { UserInfo } from '@/api'
 import { defineStore } from 'pinia'
-
-function loginApi(name: string, pwd: string) {
-  if (name && pwd)
-    return Promise.resolve({ userName: name })
-  else if (!name || !pwd)
-    return Promise.reject(new Error('invalid credentials'))
-}
+import { loginApi } from '@/api/login'
 
 interface IState {
-  userName: string | undefined
+  userInfo: UserInfo
 }
 export const useUserStore = defineStore('user', {
   state: (): IState => ({
-    userName: '',
+    userInfo: {
+      id: '',
+      username: '',
+      email: '',
+      phone: '',
+      avatar: '',
+    },
   }),
   actions: {
-    async login(user: string, password: string) {
-      const userData = await loginApi(user, password)
-      this.userName = userData?.userName
+    async login(username: string, password: string) {
+      const userData = await loginApi({ username, password })
+      // 存储 token
+      localStorage.setItem('token', userData.data.access_token)
+      // 存储用户信息
+      this.userInfo = userData.data.user as UserInfo
     },
   },
 })

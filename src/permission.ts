@@ -1,14 +1,22 @@
 import router from './router'
 import { useUserStore } from './store'
 
-router.beforeEach((to, form, next) => {
+router.beforeEach((to, from, next) => {
   const store = useUserStore()
 
-  if (to.name !== 'login') {
-    // 如果没有登录
-    if (!store.userName)
-      next({ name: 'login' })
+  // 如果访问登录页，直接放行
+  if (to.name === 'login') {
+    next()
+    return
   }
-  // 其他情况正常执行
+
+  // 如果访问非登录页，检查是否已登录
+  if (!store.userInfo.username) {
+    // 未登录，跳转到登录页
+    next({ name: 'login' })
+    return
+  }
+
+  // 已登录，正常放行
   next()
 })

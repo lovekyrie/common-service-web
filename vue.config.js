@@ -35,16 +35,17 @@ module.exports = defineConfig({
     client: {
       webSocketURL: 'ws://0.0.0.0:8080/ws',
     },
-    // 配置 historyApiFallback，排除 /api 路径，确保 API 请求走代理
+    // 配置 historyApiFallback，支持 Vue Router History 模式
+    // 所有非 API 路径的请求都会回退到 index.html，让 Vue Router 处理路由
     historyApiFallback: {
       disableDotRule: true,
-      index: '/index.html',
-      // 只对非 API 路径进行路由回退
+      // 使用更明确的配置
+      htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
       rewrites: [
-        // 排除所有 /api 开头的路径（返回 false 表示不走 historyApiFallback）
+        // 排除 /api 路径，不走 historyApiFallback，让代理处理
         { from: /^\/api/, to: false },
-        // 其他所有路径回退到 index.html
-        { from: /./, to: '/index.html' },
+        // 所有其他路径（包括 /login, /service 等）都回退到 index.html
+        { from: /.*/, to: '/index.html' },
       ],
     },
     // 代理配置：所有 /api 开头的请求都会被代理到目标服务器
