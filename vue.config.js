@@ -40,12 +40,9 @@ module.exports = defineConfig({
     historyApiFallback: {
       disableDotRule: true,
       // 使用更明确的配置
-      htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
       rewrites: [
-        // 排除 /api 路径，不走 historyApiFallback，让代理处理
         { from: /^\/api/, to: false },
-        // 所有其他路径（包括 /login, /service 等）都回退到 index.html
-        { from: /.*/, to: '/index.html' },
+        { from: /./, to: '/index.html' },
       ],
     },
     // 代理配置：所有 /api 开头的请求都会被代理到目标服务器

@@ -17,11 +17,11 @@ export const useUserStore = defineStore('user', {
   }),
   actions: {
     async login(username: string, password: string) {
-      const userData = await loginApi({ username, password })
+      const { data: { access_token, user: userInfo } } = await loginApi({ username, password })
       // 存储 token
-      localStorage.setItem('token', userData.data.access_token)
+      localStorage.setItem('token', access_token)
       // 存储用户信息
-      this.userInfo = userData.data.user as UserInfo
+      this.userInfo = userInfo as UserInfo
     },
   },
 })

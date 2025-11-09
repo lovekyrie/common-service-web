@@ -30,7 +30,7 @@ function useSubmit() {
       if (formRef.value) {
         const res = await formRef.value.validate()
         if (res) {
-          store.login(form.username, form.password)
+          await store.login(form.username, form.password)
           router.push({ name: 'service' })
         }
       }
@@ -49,25 +49,22 @@ function useSubmit() {
 
 <template>
   <div class="login">
-    <h1>焚天后端管理系统</h1>
+    <h1>后端管理系统</h1>
     <el-row :gutter="20">
       <el-col :span="12" :offset="6">
-        <el-card>
-          <el-form ref="formRef" :rules="formRules" :model="form">
-            <el-form-item label="用户名" prop="username">
-              <el-input v-model="form.username" />
-            </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="form.password" type="password" />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="submit">
-                登录
-              </el-button>
-              <el-button>取消</el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
+        <el-form ref="formRef" :rules="formRules" :model="form" label-width="120px" label-suffix=":">
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model="form.username" />
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="form.password" type="password" />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submit">
+              登录
+            </el-button>
+          </el-form-item>
+        </el-form>
       </el-col>
     </el-row>
   </div>
