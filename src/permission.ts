@@ -13,7 +13,7 @@ router.beforeEach((to, from, next) => {
   // 如果访问非登录页，检查是否已登录
   if (!store.userInfo.username) {
     // 未登录，跳转到登录页
-    next({ name: 'login' })
+      next({ name: 'login' })
     return
   }
 
