@@ -395,7 +395,7 @@ function handleMenuClick(name?: string) {
 .layout__workspace {
   padding: 28px 32px 48px;
   flex: 1;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .layout__stats {
@@ -438,13 +438,12 @@ function handleMenuClick(name?: string) {
 }
 
 .layout__content {
-  margin-top: 24px;
+  height: 100%;
 }
 
 :deep(.layout__content > *) {
   background: #ffffff;
   border-radius: 18px;
-  padding: 24px;
   box-shadow: 0 20px 40px rgba(15, 35, 95, 0.08);
 }
 

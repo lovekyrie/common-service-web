@@ -1,6 +1,7 @@
 <script setup>
 import { ElMessage } from 'element-plus'
 import { computed, ref, watch } from 'vue'
+import { formatDate } from '@/utils/utils'
 
 const props = defineProps({
   visible: {
@@ -95,7 +96,7 @@ watch(() => props.visible, (newVal) => {
   if (newVal) {
     resetForm()
     // 设置默认日期为今天
-    form.value.transaction_date = new Date().toISOString().split('T')[0]
+    form.value.transaction_date = formatDate()
   }
 })
 
@@ -225,8 +226,6 @@ function handleAmountInput(value) {
           type="date"
           placeholder="请选择交易日期"
           style="width: 100%"
-          format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd"
         />
       </el-form-item>
 
