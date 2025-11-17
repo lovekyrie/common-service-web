@@ -1,4 +1,5 @@
 <script setup>
+import { Delete, Edit } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
 defineProps({
@@ -153,12 +154,12 @@ function handleDelete(record) {
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="150" align="center" fixed="right">
+        <el-table-column label="操作" width="165" align="center" fixed="right">
           <template #default="scope">
             <el-button
               type="text"
               size="small"
-              icon="el-icon-edit"
+              :icon="Edit"
               @click="handleEdit(scope.row)"
             >
               编辑
@@ -166,7 +167,7 @@ function handleDelete(record) {
             <el-button
               type="text"
               size="small"
-              icon="el-icon-delete"
+              :icon="Delete"
               class="danger-btn"
               @click="handleDelete(scope.row)"
             >

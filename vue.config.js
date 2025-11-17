@@ -6,6 +6,8 @@ const Components = require('unplugin-vue-components/webpack')
 
 module.exports = defineConfig({
   transpileDependencies: true,
+  // 确保 publicPath 正确
+  publicPath: '/',
   configureWebpack: {
     plugins: [
       Components({
@@ -39,10 +41,10 @@ module.exports = defineConfig({
     // 所有非 API 路径的请求都会回退到 index.html，让 Vue Router 处理路由
     historyApiFallback: {
       disableDotRule: true,
-      // 使用更明确的配置
-      htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+      index: '/index.html',
+      // 明确配置：排除 /api 路径，其他所有路径都回退到 index.html
       rewrites: [
-        // 排除 /api 路径，不走 historyApiFallback，让代理处理
+        // API 路径不走 historyApiFallback
         { from: /^\/api/, to: false },
         // 所有其他路径（包括 /login, /service 等）都回退到 index.html
         { from: /.*/, to: '/index.html' },
@@ -55,16 +57,6 @@ module.exports = defineConfig({
         changeOrigin: true,
         secure: true,
         ws: false,
-        // 明确处理：对于 API 请求，始终走代理
-        bypass: (req) => {
-          // 如果请求路径以 /api 开头，且不是 HTML 请求，则走代理
-          if (req.url.startsWith('/api')) {
-            // 检查 Accept 头，如果是 HTML 请求（可能是浏览器直接访问），也走代理
-            // 因为我们的 historyApiFallback 已经处理了这种情况
-            return null // null 表示走代理
-          }
-          return false // false 表示不走代理
-        },
         // 日志级别，方便调试
         logLevel: 'debug',
       },

@@ -2,7 +2,6 @@
 import type { Service } from '@/utils/types/service'
 import { v4 as uuidv4 } from 'uuid'
 import { ref } from 'vue'
-import UploadExample from '../components/UploadExample.vue'
 import edit from './components/edit.vue'
 
 const { create, batchDel, showDialog, handleCloseDialog, handleSubmit } = useOperator()
@@ -99,12 +98,20 @@ function useCheckbox() {
       </el-table-column>
     </el-table>
     <edit :show="showDialog" @close-dialog="handleCloseDialog" @submit="handleSubmit" />
-    <UploadExample />
   </el-card>
 </template>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+.hello-container {
+  height: 100%;
+  :deep(.el-card__body) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .service-table {
   margin-top: 10px;
   border-radius: 3px;
