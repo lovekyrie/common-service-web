@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ElTable } from 'element-plus'
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
-import UploadModal from '@/views/components/UploadModal.vue'
+import UploadModal from '@/components/UploadModal.vue'
 
 interface KnowledgeLib {
   id: string
