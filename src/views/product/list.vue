@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getPostByQuery, postFormData, postJson, postUrlEncoded } from '@/api/service'
+import { getPostByQuery, postFormData, postJson, postUrlEncoded } from '@/api/httpRequestParamsWay'
 
 async function loadPost() {
   const res = await getPostByQuery({ name: 'lovekyrie', age: 20 })

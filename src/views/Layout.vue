@@ -393,7 +393,7 @@ function handleMenuClick(name?: string) {
 }
 
 .layout__workspace {
-  padding: 28px 32px 48px;
+  padding: 24px;
   flex: 1;
   overflow-y: hidden;
 }
