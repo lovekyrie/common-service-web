@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { ElMessage } from 'element-plus'
-import { v4 as uuidv4 } from 'uuid'
 import { reactive, ref, watch } from 'vue'
 import { phoneValid } from '@/utils/validator'
 
@@ -48,7 +47,7 @@ async function submit() {
     if (formRef.value) {
       const res = await formRef.value.validate()
       if (res) {
-        emit('submit', { ...form, id: uuidv4() })
+        emit('submit', { ...form })
       }
     }
   }
