@@ -5,7 +5,7 @@ const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 const Components = require('unplugin-vue-components/webpack')
 
 module.exports = defineConfig({
-  transpileDependencies: true,
+  transpileDependencies: false, // 不转译依赖，提升启动速度
   // 确保 publicPath 正确
   publicPath: '/',
   configureWebpack: {
@@ -16,10 +16,11 @@ module.exports = defineConfig({
       AutoImport({
         resolvers: [ElementPlusResolver()],
       }),
-      // 只在开发环境启用Bundle Analyzer
-      ...(process.env.NODE_ENV === 'development' ? [new BundleAnalyzerPlugin()] : []),
+      // Bundle Analyzer 按需启动：npm run serve -- --report
+      ...(process.env.npm_config_report ? [new BundleAnalyzerPlugin()] : []),
     ],
-    devtool: 'source-map',
+    // 开发环境使用更快的 source-map
+    devtool: process.env.NODE_ENV === 'development' ? 'eval-cheap-module-source-map' : 'source-map',
   },
   css: {
     loaderOptions: {
