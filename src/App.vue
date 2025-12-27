@@ -15,6 +15,7 @@
   text-align: left;
 }
 
+html,
 body {
   margin: 0;
   background-color: #f6f8fb;
