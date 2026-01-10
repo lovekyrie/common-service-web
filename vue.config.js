@@ -85,6 +85,19 @@ module.exports = defineConfig({
     hot: true,
     client: {
       webSocketURL: 'ws://0.0.0.0:8080/ws',
+      // 忽略特定的运行时错误蒙层
+      overlay: {
+        runtimeErrors: (error) => {
+          const ignoreErrors = [
+            'ResizeObserver loop limit exceeded',
+            'ResizeObserver loop completed with undelivered notifications.',
+          ]
+          if (ignoreErrors.includes(error.message)) {
+            return false
+          }
+          return true
+        },
+      },
     },
     // 配置 historyApiFallback，支持 Vue Router History 模式
     // 所有非 API 路径的请求都会回退到 index.html，让 Vue Router 处理路由
