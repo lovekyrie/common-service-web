@@ -3,12 +3,13 @@ import type { AccountingRecord, CreateAccountingInput } from '@/utils/types/acco
 import { Plus, Refresh } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { computed, onMounted, ref } from 'vue'
-import { createAccounting, deleteAccounting, queryAccountingList } from '@/api/index'
+import { createAccounting, deleteAccounting, queryAccountingList } from '@/api/accounting'
 import AccountingList from './components/AccountingList.vue'
 import AddAccountingDialog from './components/AddAccountingDialog.vue'
 
 const showAddDialog = ref(false)
 const accountingRecords = ref<AccountingRecord[]>([])
+const total = ref(0)
 const loading = ref(false)
 
 const totalIncome = computed(() => {
@@ -39,7 +40,8 @@ const isBalancePositive = computed(() => Number.parseFloat(balance.value) >= 0)
 
 async function getAccountingList() {
   const res = await queryAccountingList()
-  accountingRecords.value = res.data
+  accountingRecords.value = res.data.list
+  total.value = res.data.total
 }
 
 function handleAdd() {
