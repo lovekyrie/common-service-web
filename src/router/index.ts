@@ -54,11 +54,6 @@ const businessRoutes: Array<RouteRecordRaw> = [
   },
 ]
 
-// 根据环境变量过滤路由
-const targetModule = process.env.VUE_APP_MODULE
-const filteredBusinessRoutes = targetModule
-  ? businessRoutes.filter(route => route.name === targetModule || route.path.includes(targetModule))
-  : businessRoutes
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
@@ -69,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     redirect: 'service',
     component: () => import(/* webpackChunkName: "layout" */ '@/views/Layout.vue'),
-    children: filteredBusinessRoutes,
+    children: businessRoutes,
   },
 ]
 
