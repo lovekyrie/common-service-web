@@ -3,10 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "serve:accounting": "VUE_APP_MODULE=accounting vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview",
+    "serve:service": "cross-env VUE_APP_DEV_MODULE=service rsbuild dev",
+    "serve:product": "cross-env VUE_APP_DEV_MODULE=product rsbuild dev",
+    "serve:knowledge": "cross-env VUE_APP_DEV_MODULE=knowledge rsbuild dev",
+    "serve:expense": "cross-env VUE_APP_DEV_MODULE=expenseType rsbuild dev",
+    "serve:accounting": "cross-env VUE_APP_DEV_MODULE=accounting rsbuild dev",
+    "serve:demo": "cross-env VUE_APP_DEV_MODULE=demo rsbuild dev",
+    "lint": "eslint ."
   },
   "dependencies": {
     "axios": "^1.12.2",
@@ -19,6 +25,10 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",
+    "@rsbuild/core": "^1.7.2",
+    "@rsbuild/plugin-node-polyfill": "^1.4.4",
+    "@rsbuild/plugin-sass": "^1.5.0",
+    "@rsbuild/plugin-vue": "^1.2.3",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
