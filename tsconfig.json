@@ -17,9 +17,6 @@
         "src/*"
       ]
     },
-    "types": [
-      "webpack-env"
-    ],
     "strict": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
