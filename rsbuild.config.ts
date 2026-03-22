@@ -75,7 +75,7 @@ export default defineConfig({
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: 'https://feng-fortitude.com',
+        target: 'http://127.0.0.1:3000',
         changeOrigin: true,
         secure: true, // 如果目标网站证书有问题可以设置为 false
       },

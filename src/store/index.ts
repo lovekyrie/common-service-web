@@ -2,8 +2,16 @@ import type { UserInfo } from '@/api'
 import { defineStore } from 'pinia'
 import { loginApi } from '@/api/login'
 
+export interface TabItem {
+  name: string
+  label: string
+  path: string
+}
+
 interface IState {
   userInfo: UserInfo
+  tabs: TabItem[]
+  activeTab: string
 }
 export const useUserStore = defineStore('user', {
   state: (): IState => ({
@@ -14,8 +22,29 @@ export const useUserStore = defineStore('user', {
       phone: '',
       avatar: '',
     },
+    tabs: [],
+    activeTab: '',
   }),
   actions: {
+    addTab(tab: TabItem) {
+      const exists = this.tabs.some(t => t.name === tab.name)
+      if (!exists) {
+        this.tabs.push(tab)
+      }
+      this.activeTab = tab.name
+    },
+    removeTab(name: string) {
+      const index = this.tabs.findIndex(t => t.name === name)
+      if (index > -1) {
+        this.tabs.splice(index, 1)
+        // 如果关闭的是当前激活的 tab，切换到上一个
+        if (this.activeTab === name) {
+          const newIndex = Math.min(index, this.tabs.length - 1)
+          this.activeTab = this.tabs[newIndex]?.name ?? ''
+        }
+      }
+    },
+
     async login(username: string, password: string) {
       const { data: { access_token, user: userInfo } } = await loginApi({ username, password })
       // 存储 token 到 sessionStorage（关闭浏览器即失效）

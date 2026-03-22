@@ -15,7 +15,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -90,14 +90,19 @@ export function put<T = any>(url: string, data?: any, config?: AxiosRequestConfi
   return service.put(url, data, config)
 }
 
+// 封装 PATCH 请求
+export function patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  return service.patch(url, data, config)
+}
+
 // 封装 DELETE 请求
-export function del<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-  return service.delete(url, config)
+export function del<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  return service.delete(url, { data, ...config })
 }
 
 // 封装 DELETE 请求（别名）
-export function deleteRequest<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-  return service.delete(url, config)
+export function deleteRequest<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  return service.delete(url, { data, ...config })
 }
 
 // 封装上传文件请求
@@ -115,6 +120,7 @@ const request = {
   get,
   post,
   put,
+  patch,
   delete: deleteRequest,
   upload,
   deleteRequest,

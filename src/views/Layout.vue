@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { Bell } from '@element-plus/icons-vue'
-import { computed } from 'vue'
+import { Bell, Close, Location, User } from '@element-plus/icons-vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/store'
 
 interface SubMenuSource {
   text: string
@@ -64,6 +65,16 @@ const baseMenus: MenuSource[] = [
     icon: 'message',
     routerName: 'about',
   },
+  {
+    text: '员工花名册',
+    icon: 'user',
+    routerName: 'employee',
+  },
+  {
+    text: '部门管理',
+    icon: 'location',
+    routerName: 'department',
+  },
 ]
 
 const menus: Menu[] = baseMenus.map((menu, i) => ({
@@ -82,33 +93,62 @@ const defaultActive = defaultMenu?.routerName ?? defaultMenu?.subMenus?.[0]?.rou
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
 
 const activeMenu = computed(() => (route.meta.activeMenu as string) || (route.name?.toString() ?? defaultActive))
 
-const breadcrumbPath = computed(() => {
-  const active = activeMenu.value
-  const metaBreadcrumb = route.meta?.breadcrumb
+// 获取tab标题
+function getTabLabel(name: string): string {
+  // 先从路由meta中找
+  const menu = menus.find(m => m.routerName === name)
+  if (menu)
+    return menu.text
 
-  if (Array.isArray(metaBreadcrumb) && metaBreadcrumb.length)
-    return metaBreadcrumb.join(' / ')
-  if (typeof metaBreadcrumb === 'string' && metaBreadcrumb)
-    return metaBreadcrumb
-
-  for (const menu of menus) {
-    if (menu.routerName === active)
-      return menu.text
-    const sub = menu.subMenus?.find(item => item.routerName === active)
+  for (const m of menus) {
+    const sub = m.subMenus?.find(s => s.routerName === name)
     if (sub)
-      return `${menu.text} / ${sub.text}`
+      return sub.text
   }
+  return name
+}
 
-  return ''
-})
+// 监听路由变化，自动添加tab
+watch(
+  () => route.name,
+  (name) => {
+    if (name && route.name !== 'login') {
+      userStore.addTab({
+        name: name.toString(),
+        label: getTabLabel(name.toString()),
+        path: route.path,
+      })
+    }
+  },
+  { immediate: true },
+)
 
 function handleMenuClick(name?: string) {
   if (!name || name === activeMenu.value)
     return
   router.push({ name })
+}
+
+function handleTabClick(name: string) {
+  const tab = userStore.tabs.find(t => t.name === name)
+  if (tab) {
+    router.push(tab.path)
+  }
+}
+
+function handleTabClose(name: string) {
+  userStore.removeTab(name)
+  // 如果还有tab，跳转到当前激活的tab
+  if (userStore.activeTab) {
+    const tab = userStore.tabs.find(t => t.name === userStore.activeTab)
+    if (tab) {
+      router.push(tab.path)
+    }
+  }
 }
 </script>
 
@@ -161,13 +201,6 @@ function handleMenuClick(name?: string) {
     </aside>
     <main class="layout__main">
       <header class="layout__header">
-        <div class="layout__header-left">
-          <div class="layout__breadcrumb">
-            <span class="layout__breadcrumb-path">
-              {{ breadcrumbPath || '首页' }}
-            </span>
-          </div>
-        </div>
         <div class="layout__header-right">
           <el-icon class="layout__header-icon">
             <Bell />
@@ -179,6 +212,20 @@ function handleMenuClick(name?: string) {
       </header>
 
       <section class="layout__workspace">
+        <div v-if="userStore.tabs.length" class="custom-tabs">
+          <div
+            v-for="tab in userStore.tabs"
+            :key="tab.name"
+            class="custom-tab"
+            :class="{ 'is-active': userStore.activeTab === tab.name }"
+            @click="handleTabClick(tab.name)"
+          >
+            <span class="custom-tab__label">{{ tab.label }}</span>
+            <el-icon class="custom-tab__close" @click.stop="handleTabClose(tab.name)">
+              <Close />
+            </el-icon>
+          </div>
+        </div>
         <div class="layout__content">
           <router-view />
         </div>
@@ -309,7 +356,7 @@ function handleMenuClick(name?: string) {
   background: #ffffff;
   padding: 18px 32px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   box-shadow: 0 8px 24px rgba(15, 35, 95, 0.08);
   position: sticky;
@@ -321,23 +368,6 @@ function handleMenuClick(name?: string) {
   display: flex;
   align-items: center;
   gap: 28px;
-}
-
-.layout__breadcrumb {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.layout__breadcrumb-company {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2d5e;
-}
-
-.layout__breadcrumb-path {
-  font-size: 13px;
-  color: #6a7cb4;
 }
 
 .layout__tabs {
@@ -453,5 +483,49 @@ function handleMenuClick(name?: string) {
 
 :deep(.layout__content > .el-card .el-card__body) {
   padding: 24px;
+}
+
+.custom-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.custom-tab {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 8px 8px 0 0;
+  font-size: 13px;
+  color: #6a7cb4;
+  background: #eef1fb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 8px;
+}
+
+.custom-tab:hover {
+  color: #3453aa;
+}
+
+.custom-tab.is-active {
+  color: #ffffff;
+  background: #ff8714;
+}
+
+.custom-tab__label {
+  white-space: nowrap;
+}
+
+.custom-tab__close {
+  font-size: 12px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.custom-tab__close:hover {
+  opacity: 1;
 }
 </style>
