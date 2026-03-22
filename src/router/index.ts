@@ -52,6 +52,33 @@ const businessRoutes: Array<RouteRecordRaw> = [
     name: 'demo',
     component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/DeptUserSelectorDemo.vue'),
   },
+  {
+    path: '/employee',
+    name: 'employee',
+    redirect: { name: 'employeeList' },
+    children: [
+      {
+        path: 'list',
+        name: 'employeeList',
+        component: () => import(/* webpackChunkName: "employee" */ '@/views/employee/list.vue'),
+      },
+      {
+        path: 'add',
+        name: 'employeeAdd',
+        component: () => import(/* webpackChunkName: "employee" */ '@/views/employee/index.vue'),
+      },
+      {
+        path: 'edit/:id',
+        name: 'employeeEdit',
+        component: () => import(/* webpackChunkName: "employee" */ '@/views/employee/index.vue'),
+      },
+    ],
+  },
+  {
+    path: '/department',
+    name: 'department',
+    component: () => import(/* webpackChunkName: "department" */ '@/views/department/index.vue'),
+  },
 ]
 
 const routes: Array<RouteRecordRaw> = [
