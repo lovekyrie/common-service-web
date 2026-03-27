@@ -108,8 +108,8 @@ function handleUploadError(error: any) {
       :allowed-types="['image/*', 'application/pdf', 'text/*']"
       upload-url="/api/upload"
       @close="closeUploadModal"
-      @uploadSuccess="handleUploadSuccess"
-      @uploadError="handleUploadError"
+      @upload-success="handleUploadSuccess"
+      @upload-error="handleUploadError"
     />
 
     <!-- 仅图片上传弹窗 -->

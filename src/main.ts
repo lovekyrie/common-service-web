@@ -10,10 +10,11 @@ import './styles/global.scss' // 引入全局 Sass 样式
 import './permission'
 
 // 解决 Element Plus ResizeObserver loop limit exceeded 报错
-const debounce = (fn: (...args: any[]) => void, delay: number) => {
+function debounce(fn: (...args: any[]) => void, delay: number) {
   let timer: any = null
   return (...args: any[]) => {
-    if (timer) clearTimeout(timer)
+    if (timer)
+      clearTimeout(timer)
     timer = setTimeout(() => {
       fn(...args)
     }, delay)

@@ -180,37 +180,41 @@ export default {
         class="expense-type-tree"
         @node-click="handleNodeClick"
       >
-        <span slot-scope="{ data }" class="tree-node">
-          <span v-if="!data.isEditing" class="node-content" @dblclick="editNode(data)">
-            <div class="node-left">
-              <span class="type-name">{{ data.name }}</span>
-              <span v-if="data.isSystem" class="type-tag">系统</span>
-            </div>
-            <div class="node-right">
-              <el-dropdown trigger="click" @command="handleCommand">
-                <span class="el-dropdown-link">
-                  <i class="el-icon-more" />
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item :command="{ action: 'edit', data }">编辑</el-dropdown-item>
-                  <el-dropdown-item :command="{ action: 'addChild', data }">新增子级</el-dropdown-item>
-                  <el-dropdown-item v-if="!data.isSystem" :command="{ action: 'delete', data }" divided>删除</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
+        <template #default="{ data }">
+          <span class="tree-node">
+            <span v-if="!data.isEditing" class="node-content" @dblclick="editNode(data)">
+              <div class="node-left">
+                <span class="type-name">{{ data.name }}</span>
+                <span v-if="data.isSystem" class="type-tag">系统</span>
+              </div>
+              <div class="node-right">
+                <el-dropdown trigger="click" @command="handleCommand">
+                  <span class="el-dropdown-link">
+                    <i class="el-icon-more" />
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item :command="{ action: 'edit', data }">编辑</el-dropdown-item>
+                      <el-dropdown-item :command="{ action: 'addChild', data }">新增子级</el-dropdown-item>
+                      <el-dropdown-item v-if="!data.isSystem" :command="{ action: 'delete', data }" divided>删除</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+            </span>
+            <span v-else class="node-edit">
+              <el-input
+                ref="editInput"
+                v-model="editText"
+                size="mini"
+                class="edit-input"
+                @blur="saveEdit(data)"
+                @keyup.enter.native="saveEdit(data)"
+                @keyup.esc.native="cancelEdit(data)"
+              />
+            </span>
           </span>
-          <span v-else class="node-edit">
-            <el-input
-              ref="editInput"
-              v-model="editText"
-              size="mini"
-              class="edit-input"
-              @blur="saveEdit(data)"
-              @keyup.enter.native="saveEdit(data)"
-              @keyup.esc.native="cancelEdit(data)"
-            />
-          </span>
-        </span>
+        </template>
       </el-tree>
     </div>
   </div>

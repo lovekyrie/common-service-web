@@ -221,21 +221,21 @@ export default {
         >
           <el-table-column type="selection" width="55" />
           <el-table-column label="字段名称" prop="name">
-            <template slot-scope="scope">
+            <template #default="scope">
               <span>{{ scope.row.name }}</span>
               <span v-if="scope.row.isSystem" class="system-tag">系统</span>
             </template>
           </el-table-column>
           <el-table-column label="字段类型" prop="type" />
           <el-table-column label="是否必填" prop="required">
-            <template slot-scope="scope">
+            <template #default="scope">
               <el-icon v-if="scope.row.required" class="check-icon">
                 ✓
               </el-icon>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="120">
-            <template slot-scope="scope">
+            <template #default="scope">
               <el-button
                 type="text"
                 size="small"

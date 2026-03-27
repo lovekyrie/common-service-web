@@ -138,7 +138,7 @@ export interface EmployeeListItem extends CreateEmployeeDto {
 }
 
 // 员工列表响应
-export type EmployeeListResponse = ApiResponse<{ total: number; list: EmployeeListItem[] }>
+export type EmployeeListResponse = ApiResponse<{ total: number, list: EmployeeListItem[] }>
 
 // ============ API 方法 ============
 

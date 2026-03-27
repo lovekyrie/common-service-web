@@ -1,6 +1,6 @@
 <script lang="ts">
-import { showMessage } from '@/utils/utils'
 import { computed, defineComponent, ref } from 'vue'
+import { showMessage } from '@/utils/utils'
 
 interface UploadFile {
   file: File

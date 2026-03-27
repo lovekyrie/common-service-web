@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Bell, Close, Location, User } from '@element-plus/icons-vue'
+import { Bell, Close } from '@element-plus/icons-vue'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/store'

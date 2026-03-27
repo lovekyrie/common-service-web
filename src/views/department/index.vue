@@ -30,8 +30,8 @@ const formRules = {
 }
 
 // 将树形部门扁平化，用于父级选择
-function flattenDepartments(depts: Department[], level = 0): { id: number | string; name: string; label: string }[] {
-  const result: { id: number | string; name: string; label: string }[] = []
+function flattenDepartments(depts: Department[], level = 0): { id: number | string, name: string, label: string }[] {
+  const result: { id: number | string, name: string, label: string }[] = []
   for (const dept of depts) {
     result.push({
       id: dept.id,
