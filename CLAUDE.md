@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Vue 3 + TypeScript frontend for a backend management system. Uses Rsbuild as the build tool (migrated from vue-cli, some vue-cli devDependencies remain). Element Plus components are auto-imported via unplugin-auto-import and unplugin-vue-components.
 
+always use pnpm, not npm
+
 ## Commands
 
 ```bash

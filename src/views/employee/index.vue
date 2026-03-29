@@ -214,6 +214,7 @@ onMounted(() => {
   if (id) {
     isEdit.value = true
     editingId.value = Number(id)
+    loadEmployeeData(Number(id))
   }
 })
 </script>

@@ -50,7 +50,7 @@ const businessRoutes: Array<RouteRecordRaw> = [
   {
     path: '/demo',
     name: 'demo',
-    component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/DeptUserSelectorDemo.vue'),
+    component: () => import(/* webpackChunkName: "demo" */ '@/views/demo/FormDesignerDemo.vue'),
   },
   {
     path: '/employee',
