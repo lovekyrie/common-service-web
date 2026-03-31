@@ -1,68 +1,95 @@
 <script lang="ts" setup>
-import type { ComponentConfig, ComponentType } from './types'
+import type { FormFieldConfig, FormSchema, WidgetKey } from './types'
 import { nanoid } from 'nanoid'
 import { computed, ref } from 'vue'
 import CenterCanvas from './CenterCanvas.vue'
 import LeftPanel from './LeftPanel.vue'
-
 import RightPanel from './RightPanel.vue'
+import { FORM_SCHEMA_VERSION } from './types'
+import { createDefaultFieldPartial, WIDGET_KEYS } from './widgetRegistry'
 
-// 已放置的组件列表
-const components = ref<ComponentConfig[]>([])
-
-// 当前选中的组件 ID
+const components = ref<FormFieldConfig[]>([])
 const selectedId = ref<string | null>(null)
 
-// 当前选中的组件
 const selectedComponent = computed(() => {
   if (!selectedId.value)
     return null
   return components.value.find(c => c.id === selectedId.value) || null
 })
 
-// 添加组件到画布
+function isWidgetKey(value: string): value is WidgetKey {
+  return WIDGET_KEYS.includes(value as WidgetKey)
+}
+
+function cloneField(field: FormFieldConfig): FormFieldConfig {
+  return {
+    ...field,
+    options: field.options?.map(option => ({ ...option })),
+  }
+}
+
 function handleAddComponent(type: string, index: number) {
-  const newComponent: ComponentConfig = {
+  if (!isWidgetKey(type))
+    return
+  const w = type
+  const defaults = createDefaultFieldPartial(w)
+  const newComponent: FormFieldConfig = {
     id: nanoid(),
-    type: type as ComponentType,
+    type: w,
     fieldName: '',
     label: '',
     placeholder: '',
     required: false,
+    ...defaults,
   }
   const insertIndex = index < 0 ? components.value.length : index
   components.value.splice(insertIndex, 0, newComponent)
   selectedId.value = newComponent.id
 }
 
-// 选择组件
 function handleSelectComponent(id: string) {
   selectedId.value = id
 }
 
-// 移除组件
 function handleRemoveComponent(id: string) {
   const index = components.value.findIndex(c => c.id === id)
   if (index > -1) {
     components.value.splice(index, 1)
-    if (selectedId.value === id) {
+    if (selectedId.value === id)
       selectedId.value = null
-    }
   }
 }
 
-// 更新组件属性
-function handleUpdateProperty(id: string, key: keyof ComponentConfig, value: string | boolean) {
+function handleUpdateField(id: string, patch: Partial<FormFieldConfig>) {
   const component = components.value.find(c => c.id === id)
-  if (component) {
-    (component as any)[key] = value
+  if (component)
+    Object.assign(component, patch)
+}
+
+function getSchema(): FormSchema {
+  return {
+    schemaVersion: FORM_SCHEMA_VERSION,
+    fields: components.value.map(cloneField),
   }
 }
 
-// 暴露方法给外部使用
+function setSchema(schema: FormSchema) {
+  if (schema.schemaVersion !== FORM_SCHEMA_VERSION) {
+    console.warn(`[FormDesigner] schema version ${schema.schemaVersion}, expected ${FORM_SCHEMA_VERSION}`)
+  }
+  components.value = schema.fields.map(cloneField)
+  selectedId.value = null
+}
+
 defineExpose({
-  getData: () => components.value,
-  setData: (data: ComponentConfig[]) => { components.value = data },
+  /** 导出字段数组（兼容旧用法，给 Uni 建议用 getSchema） */
+  getData: () => components.value.map(cloneField),
+  setData: (data: FormFieldConfig[]) => {
+    components.value = data.map(cloneField)
+    selectedId.value = null
+  },
+  getSchema,
+  setSchema,
 })
 </script>
 
@@ -78,7 +105,7 @@ defineExpose({
     />
     <RightPanel
       :component="selectedComponent"
-      @update="handleUpdateProperty"
+      @update-field="handleUpdateField"
     />
   </div>
 </template>

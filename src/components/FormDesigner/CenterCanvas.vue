@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { ComponentConfig } from './types'
+import type { FormFieldConfig } from './types'
 import { Close, Edit } from '@element-plus/icons-vue'
 import RenderWidget from './RenderWidget.vue'
 
 defineProps<{
-  components: ComponentConfig[]
+  components: FormFieldConfig[]
   selectedId: string | null
 }>()
 
@@ -12,7 +12,6 @@ const emit = defineEmits<{
   select: [id: string]
   add: [type: string, index: number]
   remove: [id: string]
-  reorder: [fromIndex: number, toIndex: number]
 }>()
 
 function handleDrop(event: DragEvent, index: number) {
