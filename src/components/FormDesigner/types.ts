@@ -1,29 +1,42 @@
-// 组件类型
-export type ComponentType = 'input' | 'textarea' | 'currency' | 'number' | 'date' | 'select'
+/** 跨端控件键：PC 用 Element Plus，UniApp 按同 key 映射到 u- / uni- 组件 */
+export type WidgetKey = 'input' | 'textarea' | 'currency' | 'number' | 'date' | 'select'
 
-// 组件配置
-export interface ComponentConfig {
+/** @deprecated 使用 WidgetKey，保留别名避免外部引用大面积改名 */
+export type ComponentType = WidgetKey
+
+export interface SelectOption {
+  label: string
+  value: string
+}
+
+/** 单字段 schema（设计与运行共用；Uni 只读 type + 扩展字段） */
+export interface FormFieldConfig {
   id: string
-  type: ComponentType
+  type: WidgetKey
   fieldName: string
   label: string
   placeholder?: string
   required?: boolean
+  options?: SelectOption[]
+  min?: number
+  max?: number
+  step?: number
+  dateType?: 'date' | 'datetime'
 }
 
-// 组件定义（用于左侧面板展示）
-export interface ComponentDefinition {
-  type: ComponentType
+/** @deprecated 使用 FormFieldConfig */
+export type ComponentConfig = FormFieldConfig
+
+export const FORM_SCHEMA_VERSION = 1
+
+export interface FormSchema {
+  schemaVersion: typeof FORM_SCHEMA_VERSION
+  fields: FormFieldConfig[]
+}
+
+/** 左侧面板元数据（与 widgetRegistry 对齐） */
+export interface WidgetPaletteItem {
+  type: WidgetKey
   name: string
   icon: string
 }
-
-// 预定义的组件列表
-export const COMPONENT_DEFINITIONS: ComponentDefinition[] = [
-  { type: 'input', name: '单行文本', icon: 'Edit' },
-  { type: 'textarea', name: '多行文本', icon: 'Document' },
-  { type: 'currency', name: '千分位输入', icon: 'Coin' },
-  { type: 'number', name: '数字输入', icon: 'Odometer' },
-  { type: 'date', name: '日期选择', icon: 'Calendar' },
-  { type: 'select', name: '下拉选择', icon: 'ArrowDown' },
-]

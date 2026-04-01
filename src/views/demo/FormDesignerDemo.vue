@@ -6,9 +6,9 @@ import FormDesigner from '@/components/FormDesigner/index.vue'
 const formDesignerRef = ref<InstanceType<typeof FormDesigner> | null>(null)
 
 function handleGetData() {
-  const data = formDesignerRef.value?.getData()
-  console.log('表单设计数据：', data)
-  ElMessage.success(`已导出 ${data?.length || 0} 个组件`)
+  const schema = formDesignerRef.value?.getSchema()
+  console.log('表单 schema（Uni 可按 fields[].type 渲染）：', schema)
+  ElMessage.success(`已导出 ${schema?.fields.length ?? 0} 个字段`)
 }
 </script>
 

@@ -1,16 +1,34 @@
 <script lang="ts" setup>
-import type { ComponentConfig } from './types'
+import type { FormFieldConfig, SelectOption } from './types'
+import { Plus, Setting } from '@element-plus/icons-vue'
 
 defineProps<{
-  component: ComponentConfig | null
+  component: FormFieldConfig | null
 }>()
 
 const emit = defineEmits<{
-  update: [id: string, key: keyof ComponentConfig, value: string | boolean]
+  updateField: [id: string, patch: Partial<FormFieldConfig>]
 }>()
 
-function handleChange(id: string, key: keyof ComponentConfig, value: string | boolean) {
-  emit('update', id, key, value)
+function patch(id: string, partial: Partial<FormFieldConfig>) {
+  emit('updateField', id, partial)
+}
+
+function addOption(component: FormFieldConfig) {
+  const next = [...(component.options ?? []), { label: `选项${(component.options?.length ?? 0) + 1}`, value: '' }]
+  patch(component.id, { options: next })
+}
+
+function removeOption(component: FormFieldConfig, index: number) {
+  const next = (component.options ?? []).filter((_, i) => i !== index)
+  patch(component.id, { options: next })
+}
+
+function setOption(component: FormFieldConfig, index: number, key: keyof SelectOption, value: string) {
+  const next = (component.options ?? []).map((o, i) =>
+    i === index ? { ...o, [key]: value } : o,
+  )
+  patch(component.id, { options: next })
 }
 </script>
 
@@ -26,7 +44,7 @@ function handleChange(id: string, key: keyof ComponentConfig, value: string | bo
         <el-input
           :model-value="component.fieldName"
           placeholder="请输入英文字段名"
-          @update:model-value="handleChange(component.id, 'fieldName', $event)"
+          @update:model-value="patch(component.id, { fieldName: $event })"
         />
       </div>
 
@@ -35,7 +53,7 @@ function handleChange(id: string, key: keyof ComponentConfig, value: string | bo
         <el-input
           :model-value="component.label"
           placeholder="请输入中文标题"
-          @update:model-value="handleChange(component.id, 'label', $event)"
+          @update:model-value="patch(component.id, { label: $event })"
         />
       </div>
 
@@ -44,7 +62,7 @@ function handleChange(id: string, key: keyof ComponentConfig, value: string | bo
         <el-input
           :model-value="component.placeholder"
           placeholder="请输入占位提示"
-          @update:model-value="handleChange(component.id, 'placeholder', $event)"
+          @update:model-value="patch(component.id, { placeholder: $event })"
         />
       </div>
 
@@ -52,11 +70,87 @@ function handleChange(id: string, key: keyof ComponentConfig, value: string | bo
         <label class="property-item__label">
           <el-checkbox
             :model-value="component.required"
-            @update:model-value="handleChange(component.id, 'required', $event)"
+            @update:model-value="patch(component.id, { required: $event })"
           >
             必填
           </el-checkbox>
         </label>
+      </div>
+
+      <template v-if="component.type === 'number'">
+        <div class="property-item">
+          <label class="property-item__label">最小值</label>
+          <el-input-number
+            :model-value="component.min"
+            controls-position="right"
+            placeholder="可选"
+            style="width: 100%"
+            @update:model-value="patch(component.id, { min: $event ?? undefined })"
+          />
+        </div>
+        <div class="property-item">
+          <label class="property-item__label">最大值</label>
+          <el-input-number
+            :model-value="component.max"
+            controls-position="right"
+            placeholder="可选"
+            style="width: 100%"
+            @update:model-value="patch(component.id, { max: $event ?? undefined })"
+          />
+        </div>
+        <div class="property-item">
+          <label class="property-item__label">步长</label>
+          <el-input-number
+            :model-value="component.step ?? 1"
+            :min="0"
+            controls-position="right"
+            style="width: 100%"
+            @update:model-value="patch(component.id, { step: $event ?? 1 })"
+          />
+        </div>
+      </template>
+
+      <div v-if="component.type === 'date'" class="property-item">
+        <label class="property-item__label">日期类型</label>
+        <el-radio-group
+          :model-value="component.dateType ?? 'date'"
+          @update:model-value="patch(component.id, { dateType: $event as 'date' | 'datetime' })"
+        >
+          <el-radio-button label="date">
+            日期
+          </el-radio-button>
+          <el-radio-button label="datetime">
+            日期时间
+          </el-radio-button>
+        </el-radio-group>
+      </div>
+
+      <div v-if="component.type === 'select'" class="property-item options-block">
+        <div class="options-block__head">
+          <label class="property-item__label">下拉选项</label>
+          <el-button type="primary" link :icon="Plus" @click="addOption(component)">
+            添加
+          </el-button>
+        </div>
+        <div
+          v-for="(opt, idx) in component.options ?? []"
+          :key="idx"
+          class="option-row"
+        >
+          <el-input
+            :model-value="opt.label"
+            placeholder="显示文本"
+            @update:model-value="setOption(component, idx, 'label', $event)"
+          />
+          <el-input
+            :model-value="opt.value"
+            placeholder="值"
+            @update:model-value="setOption(component, idx, 'value', $event)"
+          />
+          <el-button type="danger" link @click="removeOption(component, idx)">
+            删除
+          </el-button>
+        </div>
       </div>
     </div>
 
@@ -102,6 +196,27 @@ function handleChange(id: string, key: keyof ComponentConfig, value: string | bo
 .property-item__label {
   font-size: 13px;
   color: #606266;
+}
+
+.options-block__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.option-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #ebeef5;
+}
+
+.option-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .empty-tip {

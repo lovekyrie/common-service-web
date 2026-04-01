@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import type { ComponentDefinition } from './types'
+import type { WidgetKey } from './types'
 import { ArrowDown, Calendar, Coin, Document, Edit, Odometer } from '@element-plus/icons-vue'
-import { COMPONENT_DEFINITIONS } from './types'
+import { WIDGET_KEYS, WIDGET_REGISTRY } from './widgetRegistry'
 
 defineProps<{
   drag?: boolean
 }>()
 
-// 图标映射
 const iconMap: Record<string, any> = {
   Edit,
   Document,
@@ -17,8 +16,8 @@ const iconMap: Record<string, any> = {
   ArrowDown,
 }
 
-function handleDragStart(event: DragEvent, item: ComponentDefinition) {
-  event.dataTransfer?.setData('componentType', item.type)
+function handleDragStart(event: DragEvent, type: WidgetKey) {
+  event.dataTransfer?.setData('componentType', type)
 }
 </script>
 
@@ -29,16 +28,16 @@ function handleDragStart(event: DragEvent, item: ComponentDefinition) {
     </div>
     <div class="left-panel__list">
       <div
-        v-for="item in COMPONENT_DEFINITIONS"
-        :key="item.type"
+        v-for="type in WIDGET_KEYS"
+        :key="type"
         class="component-item"
         draggable="true"
-        @dragstart="handleDragStart($event, item)"
+        @dragstart="handleDragStart($event, type)"
       >
         <el-icon class="component-item__icon">
-          <component :is="iconMap[item.icon]" />
+          <component :is="iconMap[WIDGET_REGISTRY[type].icon]" />
         </el-icon>
-        <span class="component-item__name">{{ item.name }}</span>
+        <span class="component-item__name">{{ WIDGET_REGISTRY[type].displayName }}</span>
       </div>
     </div>
   </div>
