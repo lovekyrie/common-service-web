@@ -3,12 +3,13 @@ import App from './App.vue'
 import router from './router'
 
 import store from './store'
+import { setupPermission } from './permission'
 
 import './style/index.css'
-import './permission'
 import './load-third-components'
 
 Vue.config.productionTip = false
+setupPermission(router)
 
 new Vue({
   router,

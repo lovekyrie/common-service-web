@@ -17,6 +17,9 @@ importers:
       element-ui:
         specifier: ^2.15.14
         version: 2.15.14(vue@2.7.16)
+      qiankun:
+        specifier: ^2.10.16
+        version: 2.10.16
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
@@ -2933,6 +2936,9 @@ packages:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
 
+  import-html-entry@1.17.0:
+    resolution: {integrity: sha512-2SDsRlGlE8bqdnGqsOyiDPEWlzJR0jNW4LWopnZl5QE1Yd0nJ7fykWo2GaKUF7Jq7pR0g3dElhuJHyamTt1gPQ==}
+
   imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
@@ -3980,6 +3986,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  qiankun@2.10.16:
+    resolution: {integrity: sha512-Q3tSVUrPnzx8ckEOKIoPnhb5LE28FPKyan/r6jEuGJGqTbIy+3rp6E2/KfU82ZI4yZpef9LFTrnxdj49jAEsmw==}
+
   qs@6.13.0:
     resolution: {integrity: sha512-+38qI9SOr8tfZ4QmJNplMUxqjbe7LKvvZgWdExBOmd+egZTtjLB67Gu0HRX3u/XOq7UU2Nx6nsjvS16Z9uwfpg==}
     engines: {node: '>=0.6'}
@@ -4270,6 +4279,9 @@ packages:
 
   signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
+
+  single-spa@5.9.5:
+    resolution: {integrity: sha512-9SQdmsyz4HSP+3gs6PJzhkaMEg+6zTlu9oxIghnwUX3eq+ajq4ft5egl0iyR55LAmO/UwvU8NgIWs/ZyQMa6dw==}
 
   sirv@2.0.4:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
@@ -8194,6 +8206,10 @@ snapshots:
       parent-module: 1.0.1
       resolve-from: 4.0.0
 
+  import-html-entry@1.17.0:
+    dependencies:
+      '@babel/runtime': 7.27.0
+
   imurmurhash@0.1.4: {}
 
   indent-string@5.0.0: {}
@@ -9321,6 +9337,13 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  qiankun@2.10.16:
+    dependencies:
+      '@babel/runtime': 7.27.0
+      import-html-entry: 1.17.0
+      lodash: 4.17.21
+      single-spa: 5.9.5
+
   qs@6.13.0:
     dependencies:
       side-channel: 1.1.0
@@ -9649,6 +9672,8 @@ snapshots:
       side-channel-weakmap: 1.0.2
 
   signal-exit@3.0.7: {}
+
+  single-spa@5.9.5: {}
 
   sirv@2.0.4:
     dependencies:

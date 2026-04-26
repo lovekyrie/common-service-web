@@ -57,8 +57,10 @@ const routes: Array<RouteConfig> = [
   },
 ]
 
-const router = new VueRouter({
-  routes,
-})
+export function createRouter() {
+  return new VueRouter({
+    routes,
+  })
+}
 
-export default router
+export default createRouter()
