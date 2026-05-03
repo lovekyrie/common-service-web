@@ -1,0 +1,261 @@
+// 全局样式文件
+@import './variables.scss';
+
+// 重置样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  color: $text-color;
+  background-color: $background-color;
+}
+
+// 链接样式
+a {
+  color: $primary-color;
+  text-decoration: none;
+  
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
+
+// 按钮基础样式
+.btn {
+  @include button-style();
+  
+  &.btn-success {
+    @include button-style($success-color);
+  }
+  
+  &.btn-warning {
+    @include button-style($warning-color);
+  }
+  
+  &.btn-error {
+    @include button-style($error-color);
+  }
+  
+  &.btn-outline {
+    background-color: transparent;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    
+    &:hover {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+}
+
+// 卡片样式
+.card {
+  @include card-style;
+  margin-bottom: $spacing-md;
+}
+
+// 文本工具类
+.text-primary { color: $primary-color; }
+.text-success { color: $success-color; }
+.text-warning { color: $warning-color; }
+.text-error { color: $error-color; }
+.text-secondary { color: $text-color-secondary; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-ellipsis {
+  @include text-ellipsis;
+}
+
+.text-ellipsis-2 {
+  @include text-ellipsis(2);
+}
+
+// 间距工具类
+.m-0 { margin: 0; }
+.m-xs { margin: $spacing-xs; }
+.m-sm { margin: $spacing-sm; }
+.m-md { margin: $spacing-md; }
+.m-lg { margin: $spacing-lg; }
+.m-xl { margin: $spacing-xl; }
+
+.p-0 { padding: 0; }
+.p-xs { padding: $spacing-xs; }
+.p-sm { padding: $spacing-sm; }
+.p-md { padding: $spacing-md; }
+.p-lg { padding: $spacing-lg; }
+.p-xl { padding: $spacing-xl; }
+
+// 响应式工具类
+@include respond-to(xs) {
+  .hidden-xs { display: none !important; }
+}
+
+@include respond-to(sm) {
+  .hidden-sm { display: none !important; }
+}
+
+@include respond-to(md) {
+  .hidden-md { display: none !important; }
+}
+
+@include respond-to(lg) {
+  .hidden-lg { display: none !important; }
+}
+
+@include respond-to(xl) {
+  .hidden-xl { display: none !important; }
+}
+
+// 动画
+@include keyframes(fadeIn) {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@include keyframes(slideIn) {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  @include animation(fadeIn, 0.3s, ease);
+}
+
+.slide-in {
+  @include animation(slideIn, 0.3s, ease);
+}
+
+// 布局工具类
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-around {
+  justify-content: space-around;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+// 容器
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  
+  @include respond-to(sm) {
+    padding: 0 $spacing-lg;
+  }
+}
+
+// 网格系统
+.row {
+  @include clearfix;
+  margin: 0 -$spacing-sm;
+  
+  @include respond-to(md) {
+    margin: 0 -$spacing-md;
+  }
+}
+
+.col {
+  float: left;
+  padding: 0 $spacing-sm;
+  
+  @include respond-to(md) {
+    padding: 0 $spacing-md;
+  }
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    @extend .col;
+    width: percentage($i / 12);
+  }
+}
+
+// 响应式列
+@include respond-to(sm) {
+  @for $i from 1 through 12 {
+    .col-sm-#{$i} {
+      width: percentage($i / 12);
+    }
+  }
+}
+
+@include respond-to(md) {
+  @for $i from 1 through 12 {
+    .col-md-#{$i} {
+      width: percentage($i / 12);
+    }
+  }
+}
+
+@include respond-to(lg) {
+  @for $i from 1 through 12 {
+    .col-lg-#{$i} {
+      width: percentage($i / 12);
+    }
+  }
+}
+
+// 工具提示
+.tooltip {
+  position: relative;
+  
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-sm;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}

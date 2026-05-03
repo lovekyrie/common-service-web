@@ -4,14 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "serve:main": "vue-cli-service serve --open /micro-main.html",
+    "serve:main": "VUE_OPEN_MICRO_MAIN=1 vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^1.12.2",
     "core-js": "^3.8.3",
-    "element-ui": "^2.15.14",
     "qiankun": "^2.10.16",
     "uuid": "^11.1.0",
     "vue": "^2.6.14",

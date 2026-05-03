@@ -10,6 +10,7 @@ import MicroMainApp from './MicroMainApp.vue'
 import store from './store'
 
 import './style/index.css'
+import './style/micro-main-shell.css'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -32,6 +33,16 @@ registerMicroApps([
     entry: `${process.env.BASE_URL}subapp-vue2.html`,
     container: '#subapp-container',
     activeRule: location => location.pathname.startsWith('/subapp/vue2'),
+    props: {
+      onGlobalStateChange: actions.onGlobalStateChange,
+      setGlobalState: actions.setGlobalState,
+    },
+  },
+  {
+    name: 'vue3-subapp',
+    entry: `${process.env.BASE_URL}subapp-vue3.html`,
+    container: '#subapp-container',
+    activeRule: location => location.pathname.startsWith('/subapp/vue3'),
     props: {
       onGlobalStateChange: actions.onGlobalStateChange,
       setGlobalState: actions.setGlobalState,
@@ -67,12 +78,12 @@ registerMicroApps([
 // 设置默认加载的子应用
 setDefaultMountApp('/subapp/vue2')
 
-// 启动 qiankun
+// strict / experimental 样式隔离均会破坏或干扰 Element UI 的全局样式与弹出层，子应用内按需关闭
 start({
-  prefetch: true, // 预加载子应用
+  prefetch: true,
   sandbox: {
-    strictStyleIsolation: true, // 样式隔离
-    experimentalStyleIsolation: true,
+    strictStyleIsolation: false,
+    experimentalStyleIsolation: false,
   },
 })
 

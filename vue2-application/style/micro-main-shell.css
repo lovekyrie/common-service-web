@@ -1,0 +1,17 @@
+/* 仅 micro-main 入口引入：避免主壳 + 子应用各按 100vh 撑出页面级滚动条 */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* qiankun 在 container 内包一层，需参与纵向 flex 链 */
+#subapp-container > div {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,12 @@
+{
+  "name": "vue3-subapp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.0",
+    "element-plus": "^2.5.0",
+    "pinia": "^2.1.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  }
+}

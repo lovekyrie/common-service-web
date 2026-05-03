@@ -17,9 +17,14 @@ module.exports = defineConfig({
       title: 'qiankun 主应用'
     },
     'subapp-vue2': {
-      entry: 'src/micro-apps/life-cycle.ts',
+      entry: 'vue2-application/life-cycle-vue2.ts',
       template: 'public/subapp-vue2.html',
       title: 'Vue2 子应用'
+    },
+    'subapp-vue3': {
+      entry: 'vue3-application/life-cycle-vue3.ts',
+      template: 'public/subapp-vue3.html',
+      title: 'Vue3 子应用'
     }
   },
   configureWebpack: {
@@ -46,6 +51,8 @@ module.exports = defineConfig({
     },
   },
   devServer: {
+    // pnpm/npm 通用：由 serve:main 注入 VUE_OPEN_MICRO_MAIN（勿把 /micro-main.html 放 cli，会被当成 entry）
+    ...(process.env.VUE_OPEN_MICRO_MAIN === '1' && { open: '/micro-main.html' }),
     hot: true,
     client: {
       webSocketURL: 'ws://0.0.0.0:8080/ws',
@@ -57,6 +64,7 @@ module.exports = defineConfig({
     historyApiFallback: {
       rewrites: [
         { from: /^\/subapp\/vue2/, to: '/micro-main.html' },
+        { from: /^\/subapp\/vue3/, to: '/micro-main.html' },
       ],
     },
     proxy: {

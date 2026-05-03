@@ -1,0 +1,155 @@
+// Sass 全局变量和混入
+// 这个文件会被全局引入，可以在所有组件中使用
+
+// 颜色变量
+$primary-color: #1890ff;
+$success-color: #52c41a;
+$warning-color: #faad14;
+$error-color: #ff4d4f;
+$text-color: #333333;
+$text-color-secondary: #666666;
+$border-color: #d9d9d9;
+$background-color: #f5f5f5;
+
+// 字体变量
+$font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: 14px;
+$font-size-lg: 16px;
+$font-size-sm: 12px;
+
+// 间距变量
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// 边框圆角
+$border-radius-base: 6px;
+$border-radius-sm: 4px;
+$border-radius-lg: 8px;
+
+// 阴影
+$box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.15);
+$box-shadow-card: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+
+// 断点
+$breakpoint-xs: 480px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
+// 混入 - 响应式
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: $breakpoint-xs) { @content; }
+  } @else if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  }
+}
+
+// 混入 - 文本省略
+@mixin text-ellipsis($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// 混入 - 居中
+@mixin center($type: 'both') {
+  @if $type == 'both' {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if $type == 'horizontal' {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  } @else if $type == 'vertical' {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+// 混入 - 按钮样式
+@mixin button-style($bg-color: $primary-color, $text-color: white) {
+  background-color: $bg-color;
+  color: $text-color;
+  border: none;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-base;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: darken($bg-color, 10%);
+  }
+  
+  &:active {
+    background-color: darken($bg-color, 15%);
+  }
+}
+
+// 混入 - 卡片样式
+@mixin card-style {
+  background: white;
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-card;
+  padding: $spacing-md;
+}
+
+// 混入 - 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// 混入 - 渐变背景
+@mixin gradient($start-color, $end-color, $direction: 'to right') {
+  background: linear-gradient($direction, $start-color, $end-color);
+}
+
+// 混入 - 动画
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// 混入 - 使用动画
+@mixin animation($name, $duration: 1s, $timing: ease, $delay: 0s, $iteration: 1) {
+  animation: $name $duration $timing $delay $iteration;
+}
+
+// 函数 - 计算颜色
+@function lighten-color($color, $percentage) {
+  @return lighten($color, $percentage);
+}
+
+@function darken-color($color, $percentage) {
+  @return darken($color, $percentage);
+}
+
+// 函数 - 计算间距
+@function spacing($multiplier: 1) {
+  @return $spacing-md * $multiplier;
+}

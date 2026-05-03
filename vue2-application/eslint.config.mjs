@@ -1,4 +1,3 @@
-// eslint.config.mjs
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
@@ -6,9 +5,6 @@ export default antfu({
     vueVersion: 2,
   },
   rules: {
-    'vue/custom-event-name-casing': 'off',
     'no-console': 'off',
-    'node/prefer-global/process': 'off',
   },
-  ignores: ['pnpm-workspace.yaml'],
 })
